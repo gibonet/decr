@@ -1,0 +1,146 @@
+---
+title: "decr Basic Example"
+author: "Gibo"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{decr Basic Example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+## Introduction
+
+As briefly described in the `README.md` file, the decr package provides functions to decompose observed differences in distributional statistics of a numeric variable (y) between two groups. An example of such analysis is the observed difference between the average wages of men and women.
+
+The decomposition proposed here is of the Blinder (1973) and Oaxaca (1973) type, whose aim is to separate the observed difference between average wages of two groups in two components:
+
+- One that is attributable to the different distributions of observed characteristics of the two groups;
+- One that is not explainable by the different distributions of observed characteristics of the two groups.
+
+The decompositions in decr are performed nonparametrically with the reweighting approach of Di Nardo, Fortin and Lemieux (DFL, 1996) and, for what concerns the common support, it is possible to decompose the difference of any distributional statistics (not only the mean). In the case of the difference between the averages (of y) of two groups, a decomposition in 4 components is done, as in Nopo (2008). The reweighting factors, in the common support, are estimated directly from the ratio of the relative frequencies observed in the strata for the two groups. In this sense, the estimation approach is very similar to coarsened exact matching (Iacus, King and Porro 2011), except that here it is possible to consider, if any, sampling weights (the references are given in the `README.md` file).
+
+In the following section we present a short example with the `invented_wages` dataset, included in the package.
+
+## Example
+
+First of all, we load the `decr` package and the `invented_wages` dataset.
+
+```{r}
+library(decr)
+data(invented_wages)
+str(invented_wages)
+```
+
+Every row of the dataset consists in a fake/invented individual worker. For every individual there is his/her gender, the economic sector in which he/she works, his/her level of education and his/her wage. Furthermore there is a column with the sampling weights.
+
+In order to perform a decomposition of the observed difference in a distributional statistic of a numeric variable (`y`) between men and women, we procede with the following steps:
+
+- we establish the common support of the two groups, in terms of some characteristics. In this example, we consider the economic sector in which one works (`sector`) and the level of education of the worker (`education`). Each observed combination of the characteristics constitutes a `strata`, where we can observe:
+    + individuals of both groups (common support)
+    + only men
+    + only women
+- for the observations in the common support, we estimate, for each group, the frequencies observed in each strata
+- we then proceed by estimating the reweighting factors which serve to balance the joint distribution of the characteristics of a group to those of the other group. There are two possibilities: balancing the joint distribution of the characteristics of group A (men) to those of group B (women), or the other way around. The first case can be summarised with the following formula for the reweighting factor:
+$$
+\widehat{\Psi}_{AB}(X_i) = \frac{\widehat{f}_{X_B}(X_i)}{\widehat{f}_{X_A}(X_i)},
+$$
+where $X_i$ is the combination of characteristics (in the example, `sector` and `education`) observed for  group A individual (a man) $i$ and $\widehat{f}_{X_A}(X_i)$ and $\widehat{f}_{X_B}(X_i)$ are the relative frequencies of characteristics $X_i$ observed for group A and group B individuals, in the common support. The reweighting factors are estimated for each strata and then associated with group A individuals (men).
+
+
+The steps described above can be done with the `reweight_strata_all2` function:
+
+
+```{r}
+# Establishment of common support between two groups, based on
+# the distributions of their characteristics (variables);
+# computes counterfactual weights (w_BA and w_AB), that can be used
+# to balance the joint distribution of characteristics of one group
+# to that of the other group
+r01 <- reweight_strata_all2(
+  data = invented_wages,
+  treatment = "gender", 
+  variables = c("sector", "education"),
+  y = "wage", 
+  weights = "sample_weights")
+
+str(r01)
+```
+
+The result of `reweight_strata_all2` is a data frame with the same number of observations of the starting data.
+The reweighting factors $\widehat{\Psi}_{AB}(X_i)$ are stored in the column `rw_AB`. Note that these reweighting factors are estimated for group A (men) in the common support; for all other observations, `rw_AB` is set equal to 1. The reweighting factors are then multiplied by the sampling weights and the result is stored in the column `w_AB`. If we estimate the joint distribution of characteristics of men, weighted by `w_AB`, we obtain the same frequencies as those observed for women.
+
+At this point, we have all the elements to estimate a so called *counterfactual* distribution of wages, that is,  the distribution of wages of men as if they had the same characteristics of women.
+This distribution mixes the characteristics of women with the wage structure of men and can also be interpreted as the wage distribution of women as if they were paid according to the wage structure of men.
+
+The counterfactual distribution allows the estimation of a counterfactual distributional statistic, which is the fundamental quantity to perform the decomposition of the observed difference.
+
+As a first example, we do the decomposition of the difference of the observed means of wages between men and women with the functions `nopodec_mean` and `nopodec`:
+
+
+```{r}
+# nopodec_mean: estimates all the elements to perform a decomposition
+# of the difference of the average of an outcome variable (y)
+# between the two groups in four components (see later...)
+s01 <- nopodec_mean(r01)
+s01
+
+
+# nopodec: decomposition of the observed difference between averages 
+# of y of group A and B in 4 components, as in Nopo (2008)
+n01_AB <- nopodec(s01, counterfactual = "AB")
+n01_AB
+```
+
+`delta_tot` is the observed difference between the average wages of men and women (the observed average wage of men is greater than that of women). This observed difference is decomposed in the following four components:
+
+- `delta_A`: part of the observed difference due to the fact that there are men (group A) which are not comparable, for features, to women (group B)
+- `delta_X`: part explained by the fact that the two groups have a different distribution of characteristics
+- `delta_S`: part not justified by the different distributions of the characteristics of the two groups, and potentially due to a difference in the remuneration structures between the two groups
+- `delta_B`: part of the difference due to the fact that there are women (group B) with characteristics that none of the men (group A) have. 
+
+Note that the observed difference is always computed as group A minus group B average wage. This can be checked with `margin_mean`, which estimates the observed average wages for the two groups:
+
+```{r}
+m01 <- margin_mean(r01)
+m01
+```
+
+The column `ybar` reports the observed average wages of men and women, whose difference is the same as that reported in the output of `nopodec` as `delta_tot`.
+
+
+As a second example, we perform the decomposition of the difference of quantiles of wages between men and women. This can be done with the functions `dec_quantile` followed by `dec_`:
+
+```{r}
+d01 <- dec_quantile(r01, probs = 0.5)
+d01
+
+
+# dec_: decomposition of the quantile difference (of wages) between two groups
+# (in 2 components) in the common support. 
+d01_p50_AB <- dec_(d01, counterfactual = "AB")
+d01_p50_AB
+```
+
+Note that in the quantile case, unlike in the average/mean case, the decomposition is done only in the common support. The example above decomposes the difference between the median wage of men and women in the common support in two components. The decomposition can be done for any other quantile level (between 0 and 1), by using the argument `probs` in the function `dec_quantile`. For example, for the 25th percentile:
+
+```{r}
+d02 <- dec_quantile(r01, probs = 0.25)
+d02
+
+d02_p25_AB <- dec_(d02, counterfactual = "AB")
+d02_p25_AB
+```
+
+
+
+
+
+
+```{r echo=FALSE, eval=FALSE}
+# Check that there are no missings (NA) in the common support
+with(r01, table(common_support, useNA = "always"))
+```
+
+
