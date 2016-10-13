@@ -1,0 +1,310 @@
+decr 0.0.7.9026
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* New generic function: `nopodec_Fhat`. This estimates empirical cumulative
+  distribution function, at a value `y`, for the two groups of observations,
+  in and out the common support. In the common support, counterfactual ecdf
+  are estimated. It also estimates the number of individuals of the two groups.
+  For this generic, two S3 methods are available: `nopodec_Fhat.default` and
+  `nopodec_Fhat.reweighted`.
+* New generic function: `margin_Fhat`. This has not yet any available S3
+  method. The purpose of this function will be to estimate the observed
+  empirical cumulative distribution function for groups A and B.
+
+
+
+
+
+decr 0.0.7.9025
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* New function: `margin_difference`. This takes the output of `margin_mean` or
+  `margin_quantile` and simply computes the difference between the observed
+  statistics of the two groups (always group A minus group B).
+* Addedd various "See Also" sections in some functions of the package.
+
+
+
+decr 0.0.7.9024
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* completed two (short) vignettes: `vignette("decr_intro")` and
+  `vignette("bootstrap_example")`
+* new function: `reweight_strata_all4`, which produces an object of class
+  `reweighted`.
+* generic function of `nopodec_mean`, `dec_median`, `dec_quantile`,
+  `margin_mean` and `margin_quantile`. For each of these generics, two S3
+  methods: default and reweighted.
+
+
+
+decr 0.0.7.9021
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Little modification to the `reweight_strata_all2` function: added `y` and
+  `variables` attributes to the output, that can be used in the next step.
+* Added default value (`y = NULL`) in functions `nopodec_mean`, `dec_median`,
+  `dec_quantile`, `margin_mean` and `margin_quantile`. When invoked without
+  specifying a value for `y`, the functions take the value from the previous
+  step, the output of `reweight_strata_all2`.
+* Completed the section "Value" of the documentation of the `fhat_strata2`
+  function.
+* A new (invented) dataset has been added: `invented_wages`.
+
+
+decr 0.0.7.9020
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* New functions: `margin_mean` and `margin_quantile`.
+* Completed the documentation of `nopodec_mean` function (section Value)
+
+
+
+decr 0.0.7.9019
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Added a condition in the `dec_` function to handle the case of no common
+  support. If this is the case, the function prints a message and sets all the
+  components equal to zero.
+
+
+decr 0.0.7.9018
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Solved the decomposition when group A members are all out of the common
+  support, while only some of group B members are.
+
+* Solved the decomposition when the "no out-of-support" case occurs, modifying
+  the `fhat_strata2()` function.
+
+
+decr 0.0.7.9017
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* New functions: `boot_nopodec_mean` and `boot_dec_quantile`. Both perform
+  nonparametric stratified bootstrap of the average difference and quantile
+  decompositions. These are the first functions for estimating confidence
+  intervals of the various decomposition components. The bootstrap is performed
+  with the 'boot' package.
+
+
+decr 0.0.7.9016
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7.9015
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7.9014
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7.90013
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7.9012
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7.9011
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7.9010
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7.9009
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7.9008
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7.9007
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7.9006
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7.9005
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7.9004
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7.9003
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7.9002
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+
+decr 0.0.7.9001
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+
+decr 0.0.7.9000
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.7
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+
+decr 0.0.6
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.5
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.4
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.3
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+decr 0.0.2
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+
+decr 0.0.1
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Minor modifications
+
+
+
+decr 0.0.0
+----------------------------------------------------------------
+
+NEW FEATURES
+
+* Very first version of the package. Type `help(package="decr")` to run
+  documentation.
