@@ -2,6 +2,8 @@
 decr
 ====
 
+[![Travis-CI Build Status](https://travis-ci.org/gibonet/decr.svg?branch=master)](https://travis-ci.org/gibonet/decr)
+
 The decr package provides functions to decompose observed differences in distributional statistics of a numeric variable (y) between two groups.
 
 An example of such analysis is the observed difference between the average wages of men and women.
