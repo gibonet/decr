@@ -1,8 +1,7 @@
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-decr
-====
+# decr
 
 [![Travis-CI Build Status](https://travis-ci.org/gibonet/decr.svg?branch=master)](https://travis-ci.org/gibonet/decr)
+
 
 The decr package provides functions to decompose observed differences in distributional statistics of a numeric variable (y) between two groups.
 
@@ -10,29 +9,36 @@ An example of such analysis is the observed difference between the average wages
 
 The decomposition proposed here is of the Blinder (1973) and Oaxaca (1973) type, whose aim is to separate the observed difference between average wages of two groups in two components:
 
--   One that is attributable to the different distributions of observed characteristics of the two groups;
--   One that is not explainable by the different distributions of observed characteristics of the two groups.
+- One that is attributable to the different distributions of observed characteristics of the two groups;
+- One that is not explainable by the different distributions of observed characteristics of the two groups.
 
 The decompositions in decr are performed nonparametrically with the reweighting approach of Di Nardo, Fortin and Lemieux (DFL, 1996) and, for what concerns the common support, it is possible to decompose the difference of any distributional statistics (not only the mean). In the case of the difference between the averages (of y) of two groups, a decomposition in 4 components is done, as in Nopo (2008). The reweighting factors, in the common support, are estimated directly from the ratio of the relative frequencies observed in the strata for the two groups. In this sense, the estimation approach is very similar to coarsened exact matching (Iacus, King and Porro 2011), except that here it is possible to consider, if any, sampling weights.
 
-Installation
-============
+
+# Installation
 
 At the moment, `decr` is available only on github and can be installed with:
 
-    devtools::install_github("gibonet/decr")
+```
+devtools::install_github("gibonet/decr")
+```
 
 It will be probably available on CRAN after some further testing.
 
-Getting started
-===============
+
+# Getting started
+
+
 
 To get started, read the "decr Basic Example" vignette, that can be opened with:
 
-    vignette("decr_intro", package = "decr")
+```
+vignette("decr_intro", package = "decr")
+```
 
-References
-==========
+
+
+# References
 
 Blinder, A. S. 1973. Wage Discrimination: Reduced Form and Structural Estimates. *The Journal of Human Resources* VIII (4): 436-55.
 
