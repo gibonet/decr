@@ -310,7 +310,8 @@ dec_ <- function(.dec_, counterfactual = c("AB", "BA")){
     delta_X <- yhat_BA_C - yhat_B_in
   }
 
-  if(nrow(.dec_cs) == 0L & check_numeric_0(delta_S) & check_numeric_0(delta_X)){
+  if(nrow(.dec_cs) == 0L && check_numeric_0(delta_S) && 
+     check_numeric_0(delta_X)){
     delta_S <- 0
     delta_X <- 0
     message("Note that in this case there is not common support between the characteristics of the two groups.")
