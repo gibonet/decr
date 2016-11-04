@@ -58,8 +58,10 @@ fhat_strata2 <- function(.cs_strata){
     tidyr::complete_(cols = c("strata", treatment), fill = list(NA))
 
   # Impostare a FALSE dove is.na(common_support) e 0 dove is.na(Nhat)?
+  # Anche fhat_groups uguale a 0 dove is.na(fhat_groups)
     fhat$common_support[is.na(fhat$common_support)] <- FALSE
     fhat$Nhat[is.na(fhat$Nhat)] <- 0
+    fhat$fhat_groups[is.na(fhat$fhat_groups)] <- 0
 
     fhat %>%
     arrange_(.dots = colnames(fhat)[1:2])
