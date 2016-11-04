@@ -108,7 +108,7 @@ dec_median.default <- function(.reweight_strata_all, y = NULL, weights = NULL, .
 #' @rdname dec_median
 dec_median.reweighted <- function(.reweighted, ...){
   .reweight_strata_all <- .reweighted[[".reweight_strata_all"]]
-  dec_median.default(.reweight_strata_all)
+  dec_median.default(.reweight_strata_all, ...)
 }
 
 
@@ -227,7 +227,7 @@ dec_quantile.default <- function(.reweight_strata_all, y = NULL, weights = NULL,
 #' @rdname dec_quantile
 dec_quantile.reweighted <- function(.reweighted, ...){
   .reweight_strata_all <- .reweighted[[".reweight_strata_all"]]
-  dec_quantile.default(.reweight_strata_all)
+  dec_quantile.default(.reweight_strata_all, ...)
 }
 
 
@@ -409,7 +409,7 @@ margin_quantile.default <- function(.reweight_strata_all, y = NULL, weights = NU
 #' @rdname margin_quantile
 margin_quantile.reweighted <- function(.reweighted, ...){
   .reweight_strata_all <- .reweighted[[".reweight_strata_all"]]
-  margin_quantile.default(.reweight_strata_all)
+  margin_quantile.default(.reweight_strata_all, ...)
 }
 
 
