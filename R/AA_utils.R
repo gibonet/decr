@@ -1,10 +1,18 @@
 
-
+# Checks if there is at least one missing value, for the columns 'variables',
+# in every row of the data frame 'data'.
+# Returns a logical vector of length equal to the number of rows of data,
+# with values TRUE if there is at least one missing value (NA) in the
+# corresponding row of the data, and FALSE if there are no missing values.
 check_NA_ <- function(data, variables){
   k <- data %>% dplyr::select_(.dots = variables) %>% lapply(is.na)
   k <- Reduce("|", k)
   k
 }
+# d <- data.frame(x = c("1", "2", NA), y = c(NA, "1", "2"))
+# decr:::check_NA_(d, variables = "x")
+# decr:::check_NA_(d, variables = "y")
+# decr:::check_NA_(d, variables = c("x", "y"))
 
 
 # cut_c: cut custom
