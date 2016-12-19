@@ -21,11 +21,9 @@ a column of ones}
 }
 \value{
 An object of class \code{reweighted}. This is a list with the following elements:
-\itemize{
-  \item .fhat_strata empirical joint frequencies of strata, in and out of the common support. This is the output of \code{\link{fhat_strata2}}
-  \item .reweight_strata adjustment factors to estimate counterfactuals (in the common support). This is the output of \code{\link{reweight_strata2}}
-  \item .reweight_strata_all data joined with the estimated adjustment (counterfactual) weights in the common support. This is the output of \code{\link{reweight_strata_all2}}
-}
+  \item{.fhat_strata}{empirical joint frequencies of strata, in and out of the common support. This is the output of \code{\link{fhat_strata2}}}
+  \item{.reweight_strata}{adjustment factors to estimate counterfactuals (in the common support). This is the output of \code{\link{reweight_strata2}}}
+  \item{.reweight_strata_all}{data joined with the estimated adjustment (counterfactual) weights in the common support. This is the output of \code{\link{reweight_strata_all2}}}
 }
 \description{
 This function estimates adjustment (counterfactual) weights in the common support and joins with the data. For observations out of the common support, the weights are equal to the sample weights (or one, in case of absence of sample weights). Note that this function does the same things of \code{\link{reweight_strata_all2}}, but stores two intermediate results: the output of functions \code{\link{fhat_strata2}} and \code{\link{reweight_strata2}} (see the description in the value section).

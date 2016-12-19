@@ -20,7 +20,7 @@ common_support_strata2(data, treatment, variables, y, weights = NULL)
 a column of ones}
 }
 \value{
-a data frame with the same number of rows of the starting data, with columns of the chosen treatment, variables, y, weights, common_support (TRUE/FALSE) and strata (a strata is given by a certain combination of the modalities of the variables)
+a data frame with the same number of rows of the starting data, with columns of the chosen \code{treatment}, \code{variables}, \code{y}, \code{weights}, \code{common_support} (TRUE/FALSE) and \code{strata} (a strata is given by a certain combination of the modalities of the variables)
 }
 \description{
 Establishes Common Support and joins with the data.
