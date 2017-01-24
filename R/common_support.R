@@ -7,7 +7,7 @@
 #' @param treatment column name of the binary variable
 #' @param variables character vector of the variables' names, for which the common support has to be established
 #'
-#' @return a data frame with all the combinations of the modalities of the variables considered. In addition two columns: common_support (logical, TRUE if in the common support), strata (identifier of a unique combination of the modalities of the variables)
+#' @return a data frame with all the combinations of the modalities of the variables considered. In addition two columns: \code{common_support} (logical, TRUE if in the common support), \code{strata} (identifier of a unique combination of the modalities of the variables)
 #'
 #' @seealso See \code{\link{common_support_strata2}}, which uses this function and then joins with the original data.
 #'

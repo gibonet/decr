@@ -12,12 +12,12 @@ fhat_strata2(.cs_strata)
 \value{
 a data frame with number of rows equal to the number of strata multiplied by 2 (for each group), with the following columns:
 \itemize{
-\item strata character vector with the combinations of the modalities of the considered variables;
-\item name of the column used as the binary treatment;
-\item common_support logical that indicates wether the strata is in or out the common support;
-\item Nhat estimate of the number of individuals in the strata;
-\item fhat estimate of the relative frequency of the strata for each group, in and out the common support;
-\item fhat_groups estimate of the relative frequency of the strata for each group (without the distinction of in and out the common support).
+\item \code{strata} character vector with the combinations of the modalities of the considered variables;
+\item \code{name} of the column used as the binary treatment;
+\item \code{common_support} logical that indicates wether the strata is in or out the common support;
+\item \code{Nhat} estimate of the number of individuals in the strata;
+\item \code{fhat} estimate of the relative frequency of the strata for each group, in and out the common support;
+\item \code{fhat_groups} estimate of the relative frequency of the strata for each group (without the distinction of in and out the common support).
 }
 }
 \description{
@@ -36,4 +36,3 @@ fhat_strata2(c00)
 \code{\link{common_support_strata2}}, whose result is the input of this function.
       See \code{\link{reweight_strata2}}, that takes the result of this function as its input.
 }
-

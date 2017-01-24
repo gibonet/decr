@@ -8,7 +8,7 @@
 #' (default value) it uses equal weights for all observations, adding
 #' a column of ones
 #'
-#' @return a data frame with the same number of rows of the starting data, with columns of the chosen treatment, variables, y, weights, common_support (TRUE/FALSE) and strata (a strata is given by a certain combination of the modalities of the variables)
+#' @return a data frame with the same number of rows of the starting data, with columns of the chosen \code{treatment}, \code{variables}, \code{y}, \code{weights}, \code{common_support} (TRUE/FALSE) and \code{strata} (a strata is given by a certain combination of the modalities of the variables)
 #'
 #' @seealso See \code{\link{common_support2}}, which is used by this function to establish common support.
 #'     See \code{\link{fhat_strata2}} and \code{\link{reweight_strata2}}, that do the next steps.

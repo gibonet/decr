@@ -22,15 +22,15 @@ dec_median <- function(...){
 #' @return A data frame with two, three or four rows, with the following columns:
 #' \itemize{
 #' \item the name of the treatment column used in \code{\link{reweight_strata_all2}};
-#' \item common_support logical indicating if in or out the common support;
-#' \item yhat median of the y variable, weighted by the given weights;
-#' \item ybar_C_A counterfactual median y of group A as if they had the same distribution of characteristics of group B. This is computed in the common support only and for group A individuals. It is computed with the weights \code{w_AB} that result from \code{\link{reweight_strata_all2}};
-#' \item ybar_C_B counterfactual median y of group B as if they had the same distribution of characteristics of group A. This is computed in the common support only and for group B individuals. It is computed with the weights \code{w_BA} that result from \code{\link{reweight_strata_all2}};
-#' \item Nhat estimate of the number of individuals.
-#' \item probs the level of the estimated quantile. In this case, it is equal to 0.5 (the median).
+#' \item \code{common_support} logical indicating if in or out the common support;
+#' \item \code{yhat} median of the y variable, weighted by the given weights;
+#' \item \code{yhat_C_A} counterfactual median y of group A as if they had the same distribution of characteristics of group B. This is computed in the common support only and for group A individuals. It is computed with the weights \code{w_AB} that result from \code{\link{reweight_strata_all2}};
+#' \item \code{yhat_C_B} counterfactual median y of group B as if they had the same distribution of characteristics of group A. This is computed in the common support only and for group B individuals. It is computed with the weights \code{w_BA} that result from \code{\link{reweight_strata_all2}};
+#' \item \code{Nhat} estimate of the number of individuals.
+#' \item \code{probs} the level of the estimated quantile. In this case, it is equal to 0.5 (the median).
 #' }
 #' The number of rows is given by the combinations of the distinct values of
-#' the first two columns: treatment and common_support.
+#' the first two columns: \code{treatment} and \code{common_support}.
 #' In the "typical" case, the resulting data frame will have 4 rows. It can have three rows if all the individuals of one group are in the common support.
 #' In case of no common support or no out-of-support, the data frame will have two rows.
 #'
@@ -137,15 +137,15 @@ dec_quantile <- function(...){
 #' @return A data frame with two, three or four rows, with the following columns:
 #' \itemize{
 #' \item the name of the treatment column used in \code{\link{reweight_strata_all2}};
-#' \item common_support logical indicating if in or out the common support;
-#' \item yhat quantile of the y variable, weighted by the given weights;
-#' \item ybar_C_A counterfactual quantile y of group A as if they had the same distribution of characteristics of group B. This is computed in the common support only and for group A individuals. It is computed with the weights \code{w_AB} that result from \code{\link{reweight_strata_all2}};
-#' \item ybar_C_B counterfactual quantile y of group B as if they had the same distribution of characteristics of group A. This is computed in the common support only and for group B individuals. It is computed with the weights \code{w_BA} that result from \code{\link{reweight_strata_all2}};
-#' \item Nhat estimate of the number of individuals.
-#' \item probs the level of the estimated quantile. Should be a number between zero and one (default: 0.5: the median).
+#' \item \code{common_support} logical indicating if in or out the common support;
+#' \item \code{yhat} quantile of the y variable, weighted by the given weights;
+#' \item \code{yhat_C_A} counterfactual quantile y of group A as if they had the same distribution of characteristics of group B. This is computed in the common support only and for group A individuals. It is computed with the weights \code{w_AB} that result from \code{\link{reweight_strata_all2}};
+#' \item \code{yhat_C_B} counterfactual quantile y of group B as if they had the same distribution of characteristics of group A. This is computed in the common support only and for group B individuals. It is computed with the weights \code{w_BA} that result from \code{\link{reweight_strata_all2}};
+#' \item \code{Nhat} estimate of the number of individuals.
+#' \item \code{probs} the level of the estimated quantile. Should be a number between zero and one (default: 0.5: the median).
 #' }
 #' The number of rows is given by the combinations of the distinct values of
-#' the first two columns: treatment and common_support.
+#' the first two columns: \code{treatment} and \code{common_support}.
 #' In the "typical" case, the resulting data frame will have 4 rows. It can have three rows if all the individuals of one group are in the common support.
 #' In case of no common support or no out-of-support, the data frame will have two rows.
 #'
@@ -243,12 +243,12 @@ dec_quantile.reweighted <- function(.reweighted, ...){
 #' @return a list with four components:
 #'
 #' \itemize{
-#'   \item probs: the chosen quantile level;
-#'   \item delta_total: total observed difference between average (wages)
+#'   \item \code{probs}: the chosen quantile level;
+#'   \item \code{delta_total}: total observed difference between average (wages)
 #'    of group A and B in the common support;
-#'   \item delta_X: part explained by the fact that the two groups have a
+#'   \item \code{delta_X}: part explained by the fact that the two groups have a
 #'    different distribution of characteristics;
-#'   \item delta_S: part not justified by the different distributions of the
+#'   \item \code{delta_S}: part not justified by the different distributions of the
 #'    characteristics of the two groups, and potentially due to a difference
 #'     in the remuneration structures between the two groups.
 #' }
@@ -343,9 +343,9 @@ margin_quantile <- function(...){
 #' @return a data frame with two rows (one for each group) and the follwing four columns:
 #' \itemize{
 #' \item the name of the treatment column used in \code{\link{reweight_strata_all2}};
-#' \item yhat: quantile of the y variable;
-#' \item Nhat: estimate of the number of individuals;
-#' \item probs: level of the estimated quantile (between 0 and 1).
+#' \item \code{yhat}: quantile of the y variable;
+#' \item \code{Nhat}: estimate of the number of individuals;
+#' \item \code{probs}: level of the estimated quantile (between 0 and 1).
 #' }
 #' @examples
 #' data(invented_wages)

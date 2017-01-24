@@ -44,4 +44,4 @@ Collate:
   "nopodec.R"
   "various_dec.R"
   "ZZ_bootstrap.R"
-RoxygenNote: 5.0.1
+RoxygenNote: 5.0.1.9000

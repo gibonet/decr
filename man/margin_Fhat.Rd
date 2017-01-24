@@ -14,4 +14,3 @@ margin_Fhat(...)
 Empirical cumulative distribution function of y for groups A and B
 (marginals) and the number of observations.
 }
-

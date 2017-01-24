@@ -28,8 +28,8 @@ margin_mean(...)
 a data frame with two rows (one for each group) and the follwing three columns:
 \itemize{
 \item the name of the treatment column used in \code{\link{reweight_strata_all2}};
-\item ybar: average of the y variable;
-\item Nhat: estimate of the number of individuals.
+\item \code{ybar}: average of the y variable;
+\item \code{Nhat}: estimate of the number of individuals.
 }
 }
 \description{
@@ -56,4 +56,3 @@ class(r00)
 margin_mean(r00)
 
 }
-

@@ -30,9 +30,9 @@ margin_quantile(...)
 a data frame with two rows (one for each group) and the follwing four columns:
 \itemize{
 \item the name of the treatment column used in \code{\link{reweight_strata_all2}};
-\item yhat: quantile of the y variable;
-\item Nhat: estimate of the number of individuals;
-\item probs: level of the estimated quantile (between 0 and 1).
+\item \code{yhat}: quantile of the y variable;
+\item \code{Nhat}: estimate of the number of individuals;
+\item \code{probs}: level of the estimated quantile (between 0 and 1).
 }
 }
 \description{
@@ -59,4 +59,3 @@ class(r00)
 margin_quantile(r00)
 
 }
-

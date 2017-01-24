@@ -15,17 +15,17 @@ nopodec(.nopodec_, counterfactual = c("AB", "BA"))
 a list with five components:
 
 \itemize{
-  \item delta_total: total observed difference between average (wages)
+  \item \code{delta_total}: total observed difference between average (wages)
    of group A and B;
-  \item delta_A: part of the observed difference due to the fact that
+  \item \code{delta_A}: part of the observed difference due to the fact that
   there are indidivuals of group A which are not comparable, for features,
    to individuals of group B;
-  \item delta_X part explained by the fact that the two groups have a
+  \item \code{delta_X} part explained by the fact that the two groups have a
    different distribution of characteristics;
-  \item delta_S part not justified by the different distributions of the
+  \item \code{delta_S} part not justified by the different distributions of the
    characteristics of the two groups, and potentially due to a difference
     in the remuneration structures between the two groups;
-  \item delta_B part of the difference due to the fact that there are
+  \item \code{delta_B} part of the difference due to the fact that there are
    individuals of group B with characteristics that none of the group A
     has.
 }
@@ -57,4 +57,3 @@ Nopo, H. 2008. Matching as a Tool to Decompose Wage Gaps. \emph{Review of Econom
 
 DiNardo J., N. M. Fortin and T. Lemieux. 1996. Labor Market Institutions and the Distribution of Wages, 1973-1992: A Semiparametric Approach. \emph{Econometrica} 64 (5): 1001-44
 }
-

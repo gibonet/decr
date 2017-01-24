@@ -190,11 +190,9 @@ resample_cs_strata3 <- function(.cs_strata){
 #'
 #'
 #' @return An object of class \code{reweighted}. This is a list with the following elements:
-#' \itemize{
-#'   \item .fhat_strata empirical joint frequencies of strata, in and out of the common support. This is the output of \code{\link{fhat_strata2}}
-#'   \item .reweight_strata adjustment factors to estimate counterfactuals (in the common support). This is the output of \code{\link{reweight_strata2}}
-#'   \item .reweight_strata_all data joined with the estimated adjustment (counterfactual) weights in the common support. This is the output of \code{\link{reweight_strata_all2}}
-#' }
+#'   \item{.fhat_strata}{empirical joint frequencies of strata, in and out of the common support. This is the output of \code{\link{fhat_strata2}}}
+#'   \item{.reweight_strata}{adjustment factors to estimate counterfactuals (in the common support). This is the output of \code{\link{reweight_strata2}}}
+#'   \item{.reweight_strata_all}{data joined with the estimated adjustment (counterfactual) weights in the common support. This is the output of \code{\link{reweight_strata_all2}}}
 #'
 #' @export
 #' @examples

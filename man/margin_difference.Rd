@@ -42,4 +42,3 @@ margin_difference(q00)
 
 
 }
-

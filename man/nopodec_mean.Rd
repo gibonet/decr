@@ -30,14 +30,14 @@ nopodec_mean(...)
 A data frame with two, three or four rows, with the following columns:
 \itemize{
 \item the name of the treatment column used in \code{\link{reweight_strata_all2}};
-\item common_support logical indicating if in or out the common support;
-\item ybar average of the y variable, weighted by the given weights;
-\item ybar_C_A counterfactual average y of group A as if they had the same distribution of characteristics of group B. This is computed in the common support only and for group A individuals. It is computed with the weights \code{w_AB} that result from \code{\link{reweight_strata_all2}};
-\item ybar_C_B counterfactual average y of group B as if they had the same distribution of characteristics of group A. This is computed in the common support only and for group B individuals. It is computed with the weights \code{w_BA} that result from \code{\link{reweight_strata_all2}};
-\item Nhat estimate of the number of individuals.
+\item \code{common_support} logical indicating if in or out the common support;
+\item \code{ybar} average of the y variable, weighted by the given weights;
+\item \code{ybar_C_A} counterfactual average y of group A as if they had the same distribution of characteristics of group B. This is computed in the common support only and for group A individuals. It is computed with the weights \code{w_AB} that result from \code{\link{reweight_strata_all2}};
+\item \code{ybar_C_B} counterfactual average y of group B as if they had the same distribution of characteristics of group A. This is computed in the common support only and for group B individuals. It is computed with the weights \code{w_BA} that result from \code{\link{reweight_strata_all2}};
+\item \code{Nhat} estimate of the number of individuals.
 }
 The number of rows is given by the combinations of the distinct values of
-the first two columns: treatment and common_support.
+the first two columns: \code{treatment} and \code{common_support}.
 In the "typical" case, the resulting data frame will have 4 rows. It can have three rows if all the individuals of one group are in the common support.
 In case of no common support or no out-of-support, the data frame will have two rows.
 }
@@ -66,4 +66,3 @@ class(r00)
 nopodec_mean(r00)
 
 }
-
