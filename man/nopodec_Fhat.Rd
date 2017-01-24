@@ -52,3 +52,4 @@ class(r00)
 nopodec_Fhat(r00, value = 5000)
 
 }
+

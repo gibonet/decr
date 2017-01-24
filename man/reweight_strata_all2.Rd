@@ -46,3 +46,4 @@ reweight_strata_all2(invented_wages, treatment = "gender",
          (\code{.fhat_strata}), \code{\link{reweight_strata2}} (\code{.reweight_strata}) and
          \code{\link{reweight_strata_all2}} (\code{.reweight_strata_all}).
 }
+

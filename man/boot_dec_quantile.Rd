@@ -42,3 +42,4 @@ b01 <- boot_dec_quantile(data = invented_wages, treatment = "gender",
 }
 
 }
+

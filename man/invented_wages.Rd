@@ -26,3 +26,4 @@ he/she works, his/her level of education and his/her wage. Furthermore
 there is a column with the sampling weights.
 }
 \keyword{datasets}
+

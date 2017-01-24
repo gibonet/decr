@@ -36,3 +36,4 @@ fhat_strata2(c00)
 \code{\link{common_support_strata2}}, whose result is the input of this function.
       See \code{\link{reweight_strata2}}, that takes the result of this function as its input.
 }
+

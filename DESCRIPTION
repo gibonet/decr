@@ -2,9 +2,9 @@ Package: decr
 Title: Tools to Perform Decompositions of Differences between two
     Groups
 Description: Tools to perform decompositions of differences between two groups
-    (for example wage decompositions). Focus is on the common support between the distribution
-    of the characteristics of the two groups. In the common support, counterfactuals can be
-    estimated in order to perform the decomposition.
+    (for example wage decompositions). Focus is on the common support between the
+    distribution of the characteristics of the two groups. In the common support,
+    counterfactuals can be estimated in order to perform the decomposition.
 Version: 0.0.7.9028
 License: MIT + file LICENSE
 Authors@R: c(
@@ -31,17 +31,17 @@ VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
 Collate:
-  "AA_utils.R"
-  "invented_data.R"
-  "common_support.R"
-  "common_support_strata.R"
-  "decr.R"
-  "fhat_strata.R"
-  "reweight_strata.R"
-  "reweight_strata_all.R"
-  "nopodec_mean.R"
-  "nopodec_Fhat.R"
-  "nopodec.R"
-  "various_dec.R"
-  "ZZ_bootstrap.R"
-RoxygenNote: 5.0.1.9000
+    "AA_utils.R"
+    "invented_data.R"
+    "common_support.R"
+    "common_support_strata.R"
+    "decr.R"
+    "fhat_strata.R"
+    "reweight_strata.R"
+    "reweight_strata_all.R"
+    "nopodec_mean.R"
+    "nopodec_Fhat.R"
+    "nopodec.R"
+    "various_dec.R"
+    "ZZ_bootstrap.R"
+RoxygenNote: 5.0.1
