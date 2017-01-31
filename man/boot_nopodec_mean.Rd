@@ -40,4 +40,3 @@ b01 <- boot_nopodec_mean(data = invented_wages, treatment = "gender",
 }
 
 }
-

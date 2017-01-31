@@ -28,4 +28,3 @@ common_support2(invented_wages, treatment = "gender",
 \seealso{
 See \code{\link{common_support_strata2}}, which uses this function and then joins with the original data.
 }
-

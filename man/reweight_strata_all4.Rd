@@ -47,4 +47,3 @@ class(r00)
          See also \code{\link{margin_mean}} and \code{\link{margin_quantile}}, that use the output
          of this function as their input.
 }
-

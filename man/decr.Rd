@@ -12,4 +12,3 @@ between the distribution of the characteristics of the two groups.
 In the common support, counterfactuals can be estimated in order
 to perform the decomposition.
 }
-

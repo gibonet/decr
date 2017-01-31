@@ -56,4 +56,3 @@ class(r00)
 margin_mean(r00)
 
 }
-

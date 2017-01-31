@@ -42,4 +42,3 @@ reweight_strata2(f00)
        See \code{\link{reweight_strata_all2}}, that uses internally functions
        \code{\link{common_support_strata2}}, \code{\link{fhat_strata2}} and \code{\link{reweight_strata2}}.
 }
-

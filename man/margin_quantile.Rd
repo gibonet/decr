@@ -59,4 +59,3 @@ class(r00)
 margin_quantile(r00)
 
 }
-

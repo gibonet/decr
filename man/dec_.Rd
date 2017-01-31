@@ -44,4 +44,3 @@ d00 <- dec_quantile(r00)
 dec_(d00)
 
 }
-

@@ -57,4 +57,3 @@ Nopo, H. 2008. Matching as a Tool to Decompose Wage Gaps. \emph{Review of Econom
 
 DiNardo J., N. M. Fortin and T. Lemieux. 1996. Labor Market Institutions and the Distribution of Wages, 1973-1992: A Semiparametric Approach. \emph{Econometrica} 64 (5): 1001-44
 }
-

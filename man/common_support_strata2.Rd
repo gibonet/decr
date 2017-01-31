@@ -38,4 +38,3 @@ See \code{\link{common_support2}}, which is used by this function to establish c
     See \code{\link{reweight_strata_all2}} that does all the steps of \code{\link{common_support_strata2}},
      \code{\link{fhat_strata2}} and \code{\link{reweight_strata2}}.
 }
-

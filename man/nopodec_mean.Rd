@@ -66,4 +66,3 @@ class(r00)
 nopodec_mean(r00)
 
 }
-

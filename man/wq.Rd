@@ -26,4 +26,3 @@ wq(x = rnorm(100), weights = runif(100))
 Ferrez, J., Graf, M. (2007). Enquête suisse sur la structure des salaires. Programmes R pour l'intervalle de confiance de la médiane. (Rapport de
 méthodes No. 338-0045) . Neuchâtel: Office fédéral de la statistique.
 }
-
