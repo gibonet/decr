@@ -49,45 +49,7 @@ dec_median <- function(...){
 #' @rdname dec_median
 #' @export
 dec_median.default <- function(.reweight_strata_all, y = NULL, weights = NULL, ...){
-  treatment <- attributes(.reweight_strata_all)[["treatment"]]
-  
-  if(is.null(weights)) weights <- attributes(.reweight_strata_all)[["weights"]]
-  if(is.null(y)) y <- attributes(.reweight_strata_all)[["y"]]
-
-  # Preparazioni per summarise_
-  yhat_marginals <- lazyeval::interp(~wq(x, w, 0.5),
-                                     x = as.name(y), w = as.name(weights))
-  yhat_counterfactual_A <- lazyeval::interp(~wq(x, w_AB, 0.5),
-                                            x = as.name(y))
-  yhat_counterfactual_B <- lazyeval::interp(~wq(x, w_BA, 0.5),
-                                            x = as.name(y))
-  nhat <- lazyeval::interp(~sum(w), w = as.name(weights))
-
-  # Mediane partitions
-  median_partitions <- .reweight_strata_all %>%
-    gby_(c(treatment, "common_support")) %>%
-    summarise2_(.dots = stats::setNames(
-      list(yhat_marginals, yhat_counterfactual_A, yhat_counterfactual_B, nhat),
-      c("yhat", "yhat_C_A", "yhat_C_B", "Nhat")))
-
-  # Mediane marginali
-#   median_marginali <- .reweight_strata_all %>%
-#     dplyr::group_by_(.dots = treatment) %>%
-#     dplyr::summarise_(.dots = stats::setNames(
-#       list(yhat_marginals, nhat),
-#       c("yhat", "Nhat")))
-
-  median_partitions <- median_partitions %>%
-    dplyr::ungroup() %>%
-    dplyr::bind_cols(data.frame(probs = rep(0.5, nrow(median_partitions))))
-
-  attributes(median_partitions)[["treatment"]] <- attributes(.reweight_strata_all)[["treatment"]]
-  attributes(median_partitions)[["variables"]] <- attributes(.reweight_strata_all)[["variables"]]
-  attributes(median_partitions)[["y"]] <- y
-  attributes(median_partitions)[["weights"]] <- weights
-  attributes(median_partitions)[["groups"]] <- attributes(.reweight_strata_all)[["groups"]]
-  attributes(median_partitions)[["probs"]] <- 0.5
-  median_partitions
+  dec_quantile.default(.reweight_strata_all, y = y, weights = weights, probs = 0.5)
 }
 
 
