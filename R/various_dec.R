@@ -167,7 +167,7 @@ dec_quantile <- function(...){
 dec_quantile.default <- function(.reweight_strata_all, y = NULL, weights = NULL, probs = 0.5, ...){
   stopifnot(length(probs) == 1)
 
-  treatment <- colnames(.reweight_strata_all)[1]
+  treatment <- attributes(.reweight_strata_all)[["treatment"]]
   if(is.null(weights)) weights <- attributes(.reweight_strata_all)[["weights"]]
   if(is.null(y)) y <- attributes(.reweight_strata_all)[["y"]]
 
