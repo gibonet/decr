@@ -80,6 +80,9 @@ reweight_strata_all2 <- function(data, treatment, variables, y, weights = NULL){
 reweight_strata_all3 <- function(.cs_strata){
   treatment <- attributes(.cs_strata)[["treatment"]]
   weights <- attributes(.cs_strata)[["weights"]]
+  
+  variables <- attributes(.cs_strata)[["variables"]]  # prova
+  y <- attributes(.cs_strata)[["y"]]  # prova
 
   .fhat_strata <- fhat_strata2(.cs_strata = .cs_strata)
 
@@ -109,6 +112,18 @@ reweight_strata_all3 <- function(.cs_strata){
     mutate2_(.dots = stats::setNames(
       list(mut1, mut2), c("w_BA", "w_AB")))
   attributes(.cs_strata)[["weights"]] <- weights
+  
+  # ---------------------------------------------------#
+  # PROVA
+  names(groups_) <- c("A", "B")
+  
+  attributes(.cs_strata)[["treatment"]] <- treatment
+  attributes(.cs_strata)[["variables"]] <- variables
+  attributes(.cs_strata)[["y"]] <- y
+  attributes(.cs_strata)[["weights"]] <- weights
+  attributes(.cs_strata)[["groups"]] <- groups_
+  # ---------------------------------------------------#
+  
   .cs_strata
 }
 

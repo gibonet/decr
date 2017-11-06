@@ -1,15 +1,16 @@
 
 # Una closure che crea la funzione da passare a boot
 fun_boot_mean <- function(y, counterfactual = c("AB", "BA")){
-  function(data, i){
-    treatment <- attributes(data)[["treatment"]]
-    weights <- attributes(data)[["weights"]]
+  function(d, i){
+    treatment <- attributes(d)[["treatment"]]
+    weights <- attributes(d)[["weights"]]
 
-    d <- data[i, ]
+    d <- d[i, ]
     attributes(d)[["weights"]] <- weights
     attributes(d)[["treatment"]] <- treatment
 
     rtmp <- reweight_strata_all3(d)
+    # y <- attributes(rtmp)[["y"]]  # PROVA
 
     stmp <- nopodec_mean(rtmp, y = y, weights = weights)
 
