@@ -4,8 +4,10 @@
 \alias{dec_quantile}
 \alias{dec_quantile.default}
 \alias{dec_quantile.reweighted}
-\title{Estimates quantiles of the y variable for the two groups, in and out the common support. In the common support, counterfactual quantiles of y are estimated.
-It also estimates the number of individuals of the two groups.}
+\title{Estimates quantiles of the y variable for the two groups, in and out the common support. 
+In the common support, counterfactual quantiles of y are estimated.
+It also estimates the number of individuals of the two groups.
+Moreover, marginal quantiles of the two groups are also computed.}
 \usage{
 dec_quantile(...)
 

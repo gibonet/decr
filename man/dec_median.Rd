@@ -7,7 +7,7 @@
 \title{Estimates medians of the y variable for the two groups, in and out the common support.
 In the common support, counterfactual medians of y are estimated.
 It also estimates the number of individuals of the two groups.
-Moreover, marginal medians of the two groups are computed.}
+Moreover, marginal medians of the two groups are also computed.}
 \usage{
 dec_median(...)
 
