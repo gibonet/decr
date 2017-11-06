@@ -273,9 +273,9 @@ dec_quantile.reweighted <- function(.reweighted, ...){
 dec_ <- function(.dec_, counterfactual = c("AB", "BA")){
   stopifnot(counterfactual[1] %in% c("AB", "BA"))
   common_support <- "common_support"
-  .dec_cs <- .dec_ %>% dplyr::filter_(.dots = common_support)
+  .dec_cs <- .dec_ %>% filter2_(.dots = common_support)
 
-  treatment <- colnames(.dec_cs)[1]
+  treatment <- attributes(.dec_)[["treatment"]]
   probs <- attributes(.dec_)[["probs"]]
   if(is.factor(.dec_cs[[treatment]])){
     groups_ <- levels(.dec_cs[[treatment]])
