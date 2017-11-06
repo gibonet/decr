@@ -251,10 +251,15 @@ dec_quantile.reweighted <- function(.reweighted, ...){
 #'
 #' \itemize{
 #'   \item \code{probs}: the chosen quantile level;
-#'   \item \code{delta_total}: total observed difference between average (wages)
+#'   \item \code{delta_tot}: total observed difference between the quantiles (of wages)
+#'    of group A and B (all the sample);
+#'   \item \code{delta_tot_CS}: total observed difference between the quantiles (of wages)
 #'    of group A and B in the common support;
+#'   \item \code{delta_AB}: difference explained by the fact that the two groups 
+#'    have some combinations of characteristics that the other group has not.    
 #'   \item \code{delta_X}: part explained by the fact that the two groups have a
-#'    different distribution of characteristics;
+#'    different distribution of characteristics (same combinations of characteristics)
+#'    but distributed differently);
 #'   \item \code{delta_S}: part not justified by the different distributions of the
 #'    characteristics of the two groups, and potentially due to a difference
 #'     in the remuneration structures between the two groups.
@@ -324,10 +329,16 @@ dec_ <- function(.dec_, counterfactual = c("AB", "BA")){
     message("Note that in this case there is not common support between the characteristics of the two groups.")
   }
 
-  delta_tot <- delta_X + delta_S
+  delta_tot_CS <- delta_X + delta_S
+  .dec_marginal <- .dec_ %>% filter2_(.dots = ~is.na(common_support))
+  yhat_A <- (.dec_marginal %>% filter2_(sel_A))$yhat
+  yhat_B <- (.dec_marginal %>% filter2_(sel_B))$yhat
+  delta_tot <- yhat_A - yhat_B
+  
+  delta_AB <- delta_tot - delta_tot_CS
 
-  list(probs = probs, delta_tot = delta_tot, delta_X = delta_X,
-       delta_S = delta_S)
+  list(probs = probs, delta_tot = delta_tot, delta_tot_CS = delta_tot_CS, 
+       delta_AB = delta_AB, delta_X = delta_X, delta_S = delta_S)
 }
 
 
