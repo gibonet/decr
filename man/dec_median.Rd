@@ -6,7 +6,8 @@
 \alias{dec_median.reweighted}
 \title{Estimates medians of the y variable for the two groups, in and out the common support.
 In the common support, counterfactual medians of y are estimated.
-It also estimates the number of individuals of the two groups.}
+It also estimates the number of individuals of the two groups.
+Moreover, marginal medians of the two groups are computed.}
 \usage{
 dec_median(...)
 
@@ -27,7 +28,7 @@ dec_median(...)
 \item{.reweighted}{an object of class \code{reweighted} (the output of \code{\link{reweight_strata_all4}})}
 }
 \value{
-A data frame with two, three or four rows, with the following columns:
+A data frame with four, five or six rows, with the following columns:
 \itemize{
 \item the name of the treatment column used in \code{\link{reweight_strata_all2}};
 \item \code{common_support} logical indicating if in or out the common support;
@@ -39,7 +40,10 @@ A data frame with two, three or four rows, with the following columns:
 }
 The number of rows is given by the combinations of the distinct values of
 the first two columns: \code{treatment} and \code{common_support}.
-In the "typical" case, the resulting data frame will have 4 rows. It can have three rows if all the individuals of one group are in the common support.
+In addition to these rows, there are two more rows at the end, with the 
+marginal medians of the two groups.
+In the "typical" case, the resulting data frame will have 4 rows. It can have 
+three rows if all the individuals of one group are in the common support.
 In case of no common support or no out-of-support, the data frame will have two rows.
 }
 \description{
