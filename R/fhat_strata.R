@@ -39,8 +39,8 @@ fhat_strata2 <- function(.cs_strata){
 
   Nhat <- NULL # to avoid a NOTE from R CMD check (...)
   fhat <- .cs_strata %>%
-    dplyr::group_by_(.dots = dots_group) %>%
-    dplyr::summarise_(.dots = stats::setNames(dots, c("Nhat"))) %>%
+    gby_(dots_group) %>%
+    summarise2_(.dots = stats::setNames(dots, c("Nhat"))) %>%
     dplyr::ungroup() #%>%
 #    tidyr::complete_(cols = c("strata", treatment), fill = list(NA))
 
@@ -49,10 +49,10 @@ fhat_strata2 <- function(.cs_strata){
 #   fhat$Nhat[is.na(fhat$Nhat)] <- 0
 
   fhat <- fhat %>%
-    dplyr::group_by_(.dots = c(treatment, "common_support")) %>%
+    gby_(c(treatment, "common_support")) %>%
     dplyr::mutate(fhat = Nhat / sum(Nhat)) %>%
     dplyr::ungroup() %>%
-    dplyr::group_by_(.dots = treatment) %>%
+    gby_(treatment) %>%
     dplyr::mutate(fhat_groups = Nhat / sum(Nhat)) %>%
     dplyr::ungroup() %>%
     tidyr::complete_(cols = c("strata", treatment), fill = list(NA))
@@ -64,7 +64,7 @@ fhat_strata2 <- function(.cs_strata){
     fhat$fhat_groups[is.na(fhat$fhat_groups)] <- 0
 
     fhat %>%
-    arrange_(.dots = colnames(fhat)[1:2])
+      arrange2_(.variables = colnames(fhat)[1:2])
 }
 
 

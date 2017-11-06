@@ -48,9 +48,9 @@ reweight_strata2 <- function(.fhat_strata){
   #   strata <- NULL # to avoid a NOTE from R CMD check (...)
   #   fhat <- NULL   # to avoid a NOTE from R CMD check (...)
   .fhat_strata %>%
-    dplyr::filter_(.dots = common_support) %>%
-    dplyr::group_by_(.dots = strata) %>%
-    dplyr::summarise_(
+    filter2_(.dots = common_support) %>%
+    gby_(strata) %>%
+    summarise2_(
       .dots = stats::setNames(
         dots_s,
         c("rw_BA", "rw_AB", "f_A", "f_B")

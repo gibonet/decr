@@ -25,7 +25,7 @@ common_support2 <- function(data, treatment, variables){
 
   sel_vars <- c(treatment, variables)
   joint_distr <- data %>%
-    dplyr::group_by_(.dots = c(treatment, variables)) %>%
+    gby_(.variables = c(treatment, variables)) %>%
     dplyr::summarise(n = n()) %>%
     dplyr::ungroup() %>%
     tidyr::unite_(col = "strata",
@@ -39,8 +39,8 @@ common_support2 <- function(data, treatment, variables){
   col1 <- cols[1]; col2 <- cols[2]
   dots <- lazyeval::interp(~ x - y, x = as.name(col1), y = as.name(col2))
   joint_distr <- joint_distr %>%
-    mutate_(.dots = stats::setNames(list(dots), c("n_diff"))) %>%
-    mutate_(common_support = ~ifelse(is.na(n_diff), FALSE, TRUE))
+    mutate2_(.dots = stats::setNames(list(dots), c("n_diff"))) %>%
+    mutate2_(common_support = ~ifelse(is.na(n_diff), FALSE, TRUE))
 
   k <- check_NA_(joint_distr, variables = variables)
   joint_distr[k, "common_support"] <- FALSE

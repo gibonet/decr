@@ -39,7 +39,7 @@ common_support_strata2 <- function(data, treatment, variables, y, weights = NULL
   # Join dei dati con .common_support
   res <- data %>%
     dplyr::as_data_frame() %>%
-    dplyr::select_(.dots = c(treatment, variables, y, weights)) %>%
+    select2_(.variables = c(treatment, variables, y, weights)) %>%
     dplyr::left_join(.common_support, by = variables)
   attributes(res)[["weights"]] <- weights
   attributes(res)[["treatment"]] <- treatment

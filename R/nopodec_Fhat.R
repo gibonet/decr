@@ -47,8 +47,8 @@ nopodec_Fhat.default <- function(.reweight_strata_all, y = NULL, weights = NULL,
 
   # Ecdf partitions
   Fhat_partitions <- .reweight_strata_all %>%
-    dplyr::group_by_(.dots = c(treatment, "common_support")) %>%
-    dplyr::summarise_(.dots = stats::setNames(
+    gby_(c(treatment, "common_support")) %>%
+    summarise2_(.dots = stats::setNames(
       list(Fhat_marginals, Fhat_counterfactual_A, Fhat_counterfactual_B, nhat),
       c("Fhat", "Fhat_C_A", "Fhat_C_B", "Nhat")))
 

@@ -127,7 +127,7 @@ plogis_ <- function(x){
 #' @export
 wq <- function(x, weights, probs = c(0.5)){
   if(missing(weights))
-    return(quantile(x, probs = probs, na.rm = TRUE))
+    return(stats::quantile(x, probs = probs, na.rm = TRUE))
   ord <- order(x)
   cum.w <- cumsum(weights[ord])[!is.na(x)]/sum(weights[!is.na(x)])
   tmpS <- data.frame(matrix(rep(NA, 2 * length(probs)), nrow = 2))

@@ -61,8 +61,8 @@ nopodec_mean.default <- function(.reweight_strata_all, y = NULL, weights = NULL,
 
   # Medie partitions
   medie_partitions <- .reweight_strata_all %>%
-    dplyr::group_by_(.dots = c(treatment, "common_support")) %>%
-    dplyr::summarise_(.dots = stats::setNames(
+    gby_(c(treatment, "common_support")) %>%
+    summarise2_(.dots = stats::setNames(
       list(ybar_marginals, ybar_counterfactual_A, ybar_counterfactual_B, nhat),
       c("ybar", "ybar_C_A", "ybar_C_B", "Nhat")))
 
@@ -137,8 +137,8 @@ margin_mean.default <- function(.reweight_strata_all, y = NULL, weights = NULL, 
 
   # Medie marginali
   medie_marginali <- .reweight_strata_all %>%
-    dplyr::group_by_(.dots = treatment) %>%
-    dplyr::summarise_(.dots = stats::setNames(
+    gby_(treatment) %>%
+    summarise2_(.dots = stats::setNames(
       list(ybar_marginals, nhat),
       c("ybar", "Nhat")))
 

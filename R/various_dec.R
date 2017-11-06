@@ -64,8 +64,8 @@ dec_median.default <- function(.reweight_strata_all, y = NULL, weights = NULL, .
 
   # Mediane partitions
   median_partitions <- .reweight_strata_all %>%
-    dplyr::group_by_(.dots = c(treatment, "common_support")) %>%
-    dplyr::summarise_(.dots = stats::setNames(
+    gby_(c(treatment, "common_support")) %>%
+    summarise2_(.dots = stats::setNames(
       list(yhat_marginals, yhat_counterfactual_A, yhat_counterfactual_B, nhat),
       c("yhat", "yhat_C_A", "yhat_C_B", "Nhat")))
 
@@ -182,8 +182,8 @@ dec_quantile.default <- function(.reweight_strata_all, y = NULL, weights = NULL,
 
   # Quantili partitions
   quantiles_partitions <- .reweight_strata_all %>%
-    dplyr::group_by_(.dots = c(treatment, "common_support")) %>%
-    dplyr::summarise_(.dots = stats::setNames(
+    gby_(c(treatment, "common_support")) %>%
+    summarise2_(.dots = stats::setNames(
       list(yhat_marginals, yhat_counterfactual_A, yhat_counterfactual_B, nhat),
       c("yhat", "yhat_C_A", "yhat_C_B", "Nhat")))
 
@@ -287,17 +287,17 @@ dec_ <- function(.dec_, counterfactual = c("AB", "BA")){
 
   perc_ <- lazyeval::interp(~x / sum(x), x = as.name("Nhat"))
 
-  yhat_A_in <- (.dec_cs %>% dplyr::filter_(sel_A))$yhat
-  yhat_B_in <- (.dec_cs %>% dplyr::filter_(sel_B))$yhat
+  yhat_A_in <- (.dec_cs %>% filter2_(sel_A))$yhat
+  yhat_B_in <- (.dec_cs %>% filter2_(sel_B))$yhat
 
   # I due controfattuali (per una scomposizione ne serve uno dei due, ma la scomposizione
   # può essere fatta con entrambi: X_A'Beta_B e X_B'Beta_A)
 
   # Salario del gruppo A come se avesse le stesse caratteristiche del gruppo B (X_B'Beta_A)
-  yhat_AB_C <- (.dec_cs %>% dplyr::filter_(sel_A))$yhat_C_A
+  yhat_AB_C <- (.dec_cs %>% filter2_(sel_A))$yhat_C_A
 
   # Salario del gruppo B come se avesse le stesse caratteristiche del gruppo A (X_A'Beta_B)
-  yhat_BA_C <- (.dec_cs %>% dplyr::filter_(sel_B))$yhat_C_B
+  yhat_BA_C <- (.dec_cs %>% filter2_(sel_B))$yhat_C_B
 
   counterfactual <- match.arg(counterfactual)
   # Prima scomposizione: con yhat_AB_C
@@ -373,8 +373,8 @@ margin_quantile.default <- function(.reweight_strata_all, y = NULL, weights = NU
 
   # Quantili marginali
   quantiles_marginali <- .reweight_strata_all %>%
-    dplyr::group_by_(.dots = treatment) %>%
-    dplyr::summarise_(.dots = stats::setNames(
+    gby_(treatment) %>%
+    summarise2_(.dots = stats::setNames(
       list(yhat_marginals, nhat),
       c("yhat", "Nhat")))
 

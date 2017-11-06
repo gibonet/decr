@@ -52,7 +52,7 @@ boot_nopodec_mean <- function(data, treatment, variables, y, weights = NULL, R =
                                   x1 = as.name("strata"),
                                   x2 = as.name(treatment))
   c01 <- c01 %>%
-    dplyr::mutate_(.dots = stats::setNames(list(dots_mutate), c("strata2")))
+    mutate2_(.dots = stats::setNames(list(dots_mutate), c("strata2")))
   attributes(c01)[["weights"]] <- weights
   attributes(c01)[["treatment"]] <- treatment
 
@@ -108,7 +108,7 @@ boot_dec_quantile <- function(data, treatment, variables, y, weights = NULL, R =
                                   x1 = as.name("strata"),
                                   x2 = as.name(treatment))
   c01 <- c01 %>%
-    dplyr::mutate_(.dots = stats::setNames(list(dots_mutate), c("strata2")))
+    mutate2_(.dots = stats::setNames(list(dots_mutate), c("strata2")))
   attributes(c01)[["weights"]] <- weights
   attributes(c01)[["treatment"]] <- treatment
 

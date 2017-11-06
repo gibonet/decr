@@ -60,7 +60,7 @@ reweight_strata_all2 <- function(data, treatment, variables, y, weights = NULL){
   mut1 <- lazyeval::interp(~w * rw_BA, w = as.name(weights))
   mut2 <- lazyeval::interp(~w * rw_AB, w = as.name(weights))
   .cs_strata <- .cs_strata %>%
-    dplyr::mutate_(.dots = stats::setNames(
+    mutate2_(.dots = stats::setNames(
       list(mut1, mut2), c("w_BA", "w_AB")))
 
   names(groups_) <- c("A", "B")
@@ -106,7 +106,7 @@ reweight_strata_all3 <- function(.cs_strata){
   mut1 <- lazyeval::interp(~w * rw_BA, w = as.name(weights))
   mut2 <- lazyeval::interp(~w * rw_AB, w = as.name(weights))
   .cs_strata <- .cs_strata %>%
-    dplyr::mutate_(.dots = stats::setNames(
+    mutate2_(.dots = stats::setNames(
       list(mut1, mut2), c("w_BA", "w_AB")))
   attributes(.cs_strata)[["weights"]] <- weights
   .cs_strata
@@ -239,7 +239,7 @@ reweight_strata_all4 <- function(data, treatment, variables, y, weights = NULL){
   mut1 <- lazyeval::interp(~w * rw_BA, w = as.name(weights))
   mut2 <- lazyeval::interp(~w * rw_AB, w = as.name(weights))
   .cs_strata <- .cs_strata %>%
-    dplyr::mutate_(.dots = stats::setNames(
+    mutate2_(.dots = stats::setNames(
       list(mut1, mut2), c("w_BA", "w_AB")))
 
   names(groups_) <- c("A", "B")

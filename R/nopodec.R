@@ -69,26 +69,26 @@ nopodec <- function(.nopodec_, counterfactual = c("AB", "BA")){
   sel_common_support <- lazyeval::interp(~!x, x = as.name(common_support))
 
   phat_AB_out <- .nopodec_ %>%
-    dplyr::group_by_(.dots = treatment) %>%
+    gby_(treatment) %>%
     dplyr::mutate_(.dots = stats::setNames(list(perc_), c("perc"))) %>%
-    dplyr::filter_(.dots = sel_common_support)
+    filter2_(.dots = sel_common_support)
 
-  phat_A_out <- (phat_AB_out %>% dplyr::filter_(sel_A))$perc
-  phat_B_out <- (phat_AB_out %>% dplyr::filter_(sel_B))$perc
+  phat_A_out <- (phat_AB_out %>% filter2_(sel_A))$perc
+  phat_B_out <- (phat_AB_out %>% filter2_(sel_B))$perc
 
-  ybar_A_out <- (.nopodec_ %>% dplyr::filter_(sel_A) %>% dplyr::filter(!common_support))$ybar
-  ybar_A_in <- (.nopodec_ %>% dplyr::filter_(sel_A) %>% dplyr::filter(common_support))$ybar
-  ybar_B_out <- (.nopodec_ %>% dplyr::filter_(sel_B) %>% dplyr::filter(!common_support))$ybar
-  ybar_B_in <- (.nopodec_ %>% dplyr::filter_(sel_B) %>% dplyr::filter(common_support))$ybar
+  ybar_A_out <- (.nopodec_ %>% filter2_(sel_A) %>% dplyr::filter(!common_support))$ybar
+  ybar_A_in <- (.nopodec_ %>% filter2_(sel_A) %>% dplyr::filter(common_support))$ybar
+  ybar_B_out <- (.nopodec_ %>% filter2_(sel_B) %>% dplyr::filter(!common_support))$ybar
+  ybar_B_in <- (.nopodec_ %>% filter2_(sel_B) %>% dplyr::filter(common_support))$ybar
 
   # I due controfattuali (per una scomposizione ne serve uno dei due, ma la scomposizione
   # può essere fatta con entrambi: X_A'Beta_B e X_B'Beta_A)
 
   # Salario del gruppo A come se avesse le stesse caratteristiche del gruppo B (X_B'Beta_A)
-  ybar_AB_C <- (.nopodec_ %>% dplyr::filter_(sel_A) %>% dplyr::filter(common_support))$ybar_C_A
+  ybar_AB_C <- (.nopodec_ %>% filter2_(sel_A) %>% dplyr::filter(common_support))$ybar_C_A
 
   # Salario del gruppo B come se avesse le stesse caratteristiche del gruppo A (X_A'Beta_B)
-  ybar_BA_C <- (.nopodec_ %>% dplyr::filter_(sel_B) %>% dplyr::filter(common_support))$ybar_C_B
+  ybar_BA_C <- (.nopodec_ %>% filter2_(sel_B) %>% dplyr::filter(common_support))$ybar_C_B
 
 
   ################################################
@@ -151,17 +151,17 @@ nopodec_stat <- function(.nopodec_, counterfactual = c("AB", "BA"), stat = c("Fh
   sel_common_support <- lazyeval::interp(~!x, x = as.name(common_support))
 
   phat_AB_out <- .nopodec_ %>%
-    dplyr::group_by_(.dots = treatment) %>%
+    gby_(treatment) %>%
     dplyr::mutate_(.dots = stats::setNames(list(perc_), c("perc"))) %>%
-    dplyr::filter_(.dots = sel_common_support)
+    filter2_(.dots = sel_common_support)
 
-  phat_A_out <- (phat_AB_out %>% dplyr::filter_(sel_A))$perc
-  phat_B_out <- (phat_AB_out %>% dplyr::filter_(sel_B))$perc
+  phat_A_out <- (phat_AB_out %>% filter2_(sel_A))$perc
+  phat_B_out <- (phat_AB_out %>% filter2_(sel_B))$perc
 
-  ybar_A_out <- (.nopodec_ %>% dplyr::filter_(sel_A) %>% dplyr::filter(!common_support))[[stat[1]]]
-  ybar_A_in <- (.nopodec_ %>% dplyr::filter_(sel_A) %>% dplyr::filter(common_support))[[stat[1]]]
-  ybar_B_out <- (.nopodec_ %>% dplyr::filter_(sel_B) %>% dplyr::filter(!common_support))[[stat[1]]]
-  ybar_B_in <- (.nopodec_ %>% dplyr::filter_(sel_B) %>% dplyr::filter(common_support))[[stat[1]]]
+  ybar_A_out <- (.nopodec_ %>% filter2_(sel_A) %>% dplyr::filter(!common_support))[[stat[1]]]
+  ybar_A_in <- (.nopodec_ %>% filter2_(sel_A) %>% dplyr::filter(common_support))[[stat[1]]]
+  ybar_B_out <- (.nopodec_ %>% filter2_(sel_B) %>% dplyr::filter(!common_support))[[stat[1]]]
+  ybar_B_in <- (.nopodec_ %>% filter2_(sel_B) %>% dplyr::filter(common_support))[[stat[1]]]
 
   # I due controfattuali (per una scomposizione ne serve uno dei due, ma la scomposizione
   # può essere fatta con entrambi: X_A'Beta_B e X_B'Beta_A)
@@ -169,10 +169,10 @@ nopodec_stat <- function(.nopodec_, counterfactual = c("AB", "BA"), stat = c("Fh
   stat_C_A <- paste0(stat[1], "_C_A")
   stat_C_B <- paste0(stat[1], "_C_B")
   # Salario del gruppo A come se avesse le stesse caratteristiche del gruppo B (X_B'Beta_A)
-  ybar_AB_C <- (.nopodec_ %>% dplyr::filter_(sel_A) %>% dplyr::filter(common_support))[[stat_C_A]]
+  ybar_AB_C <- (.nopodec_ %>% filter2_(sel_A) %>% dplyr::filter(common_support))[[stat_C_A]]
 
   # Salario del gruppo B come se avesse le stesse caratteristiche del gruppo A (X_A'Beta_B)
-  ybar_BA_C <- (.nopodec_ %>% dplyr::filter_(sel_B) %>% dplyr::filter(common_support))[[stat_C_B]]
+  ybar_BA_C <- (.nopodec_ %>% filter2_(sel_B) %>% dplyr::filter(common_support))[[stat_C_B]]
 
 
   ################################################
