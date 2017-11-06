@@ -28,7 +28,7 @@ dec_quantile(...)
 \item{.reweighted}{an object of class \code{reweighted} (the output of \code{\link{reweight_strata_all4}})}
 }
 \value{
-A data frame with two, three or four rows, with the following columns:
+A data frame with four, five or six rows, with the following columns:
 \itemize{
 \item the name of the treatment column used in \code{\link{reweight_strata_all2}};
 \item \code{common_support} logical indicating if in or out the common support;
@@ -40,6 +40,8 @@ A data frame with two, three or four rows, with the following columns:
 }
 The number of rows is given by the combinations of the distinct values of
 the first two columns: \code{treatment} and \code{common_support}.
+In addition to these rows, there are two more rows at the end, with the 
+marginal quantiles of the two groups.
 In the "typical" case, the resulting data frame will have 4 rows. It can have three rows if all the individuals of one group are in the common support.
 In case of no common support or no out-of-support, the data frame will have two rows.
 }

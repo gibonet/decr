@@ -135,7 +135,7 @@ dec_quantile <- function(...){
 #' @inheritParams nopodec_mean
 #' @param probs numeric vector of length one with the desired quantile level (should be between 0 and 1).
 #'
-#' @return A data frame with two, three or four rows, with the following columns:
+#' @return A data frame with four, five or six rows, with the following columns:
 #' \itemize{
 #' \item the name of the treatment column used in \code{\link{reweight_strata_all2}};
 #' \item \code{common_support} logical indicating if in or out the common support;
@@ -147,6 +147,8 @@ dec_quantile <- function(...){
 #' }
 #' The number of rows is given by the combinations of the distinct values of
 #' the first two columns: \code{treatment} and \code{common_support}.
+#' In addition to these rows, there are two more rows at the end, with the 
+#' marginal quantiles of the two groups.
 #' In the "typical" case, the resulting data frame will have 4 rows. It can have three rows if all the individuals of one group are in the common support.
 #' In case of no common support or no out-of-support, the data frame will have two rows.
 #'
@@ -199,6 +201,10 @@ dec_quantile.default <- function(.reweight_strata_all, y = NULL, weights = NULL,
     dplyr::ungroup() %>%
     dplyr::bind_cols(data.frame(probs = rep(probs, nrow(quantiles_partitions))))
 
+  # dplyr::bind_rows(margin_quantile(.reweight_strata_all, probs = probs)) %>% ## PROVA!!! ##
+  marginal_quantiles <- margin_quantile(.reweight_strata_all, y = y, weights = weights, probs = probs)
+  quantiles_partitions <- quantiles_partitions %>%
+    dplyr::bind_rows(marginal_quantiles)
 
   attributes(quantiles_partitions)[["treatment"]] <- attributes(.reweight_strata_all)[["treatment"]]
   attributes(quantiles_partitions)[["variables"]] <- attributes(.reweight_strata_all)[["variables"]]
