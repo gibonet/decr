@@ -2,6 +2,13 @@ decr 0.0.7.9031
 ----------------------------------------------------------------
 
 * Some dplyr wrappers used in various functions of the package.
+* function dec_quantile now computes also marginal quantiles 
+  (reported in the last two rows of the output).
+* function dec_ now reports also the total observed difference
+  between the quantiles of the two groups (`delta_tot`), the difference
+  observed in the common support (`delta_tot_CS`) and a "residual" part
+  of the difference (`delta_AB`), which is the difference between
+  `delta_tot` and `delta_tot_CS`.
 
 
 

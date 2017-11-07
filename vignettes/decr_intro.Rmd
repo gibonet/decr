@@ -46,7 +46,7 @@ In order to perform a decomposition of the observed difference in a distribution
 $$
 \widehat{\Psi}_{AB}(X_i) = \frac{\widehat{f}_{X_B}(X_i)}{\widehat{f}_{X_A}(X_i)},
 $$
-where $X_i$ is the combination of characteristics (in the example, `sector` and `education`) observed for  group A individual (a man) $i$ and $\widehat{f}_{X_A}(X_i)$ and $\widehat{f}_{X_B}(X_i)$ are the relative frequencies of characteristics $X_i$ observed for group A and group B individuals, in the common support. The reweighting factors are estimated for each strata and then associated with group A individuals (men).
+where $X_i$ is the combination of characteristics (in the example, `sector` and `education`) observed for  group A individual (a man) $i$ and $\widehat{f}_{X_A}(X_i)$ and $\widehat{f}_{X_B}(X_i)$ are the relative frequencies of characteristics $X_i$ observed for group A and group B individuals, in the common support. The reweighting factors are estimated for each strata and then associated with group A individuals in the common suport (men).
 
 
 The steps described above can be done with the `reweight_strata_all2` function:
@@ -123,7 +123,8 @@ d01_p50_AB <- dec_(d01, counterfactual = "AB")
 d01_p50_AB
 ```
 
-Note that in the quantile case, unlike in the average/mean case, the decomposition is done only in the common support. The example above decomposes the difference between the median wage of men and women in the common support in two components. The decomposition can be done for any other quantile level (between 0 and 1), by using the argument `probs` in the function `dec_quantile`. For example, for the 25th percentile:
+Note that in the quantile case, unlike in the average/mean case, the decomposition is done only in the common support. The example above decomposes the difference between the median wage of men and women in the common support in two components (`delta_X` and `delta_S`). The total difference between the average wages is `delta_tot`, while the difference observed only in the common support is `delta_tot_CS` (which in this case corresponds to the total observed difference, `delta_tot`). The residual part of the difference, that can be explained by the fact that the two groups have some combinations of characteristics not comparable, is reported in `delta_AB`, which is zero in this case. Unlike in the average/mean case, this component can not be further decomposed in `delta_A` and `delta_B`.  
+The decomposition can be done for any other quantile level (between 0 and 1), by using the argument `probs` in the function `dec_quantile`. For example, for the 25th percentile:
 
 ```{r}
 d02 <- dec_quantile(r01, probs = 0.25)
