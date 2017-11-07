@@ -53,7 +53,7 @@ In order to estimate confidence intervals as well, there is the `boot_nopodec_me
 - `R`: the number of bootstrap replicates
 - `...`: other (optional) arguments passed on to `boot::boot`
 
-In short, `boot_nopodec_mean` performs a nonparametric bootstrap, stratified by the strata defined by the variables used for each group, and returns an object of class `boot` (from package `boot`). Here below an example with `R = 500` bootstrap replicates:
+In short, `boot_nopodec_mean` performs a nonparametric bootstrap, stratified by the strata defined by the variables used for each group, and returns an object of class `boot` (from package `boot`). Here below an example with `R = 50` bootstrap replicates:
 
 ```{r cache=TRUE}
 b01 <- boot_nopodec_mean(
@@ -62,7 +62,7 @@ b01 <- boot_nopodec_mean(
   variables = c("sector", "education"), 
   y = "wage", 
   weights = "sample_weights", 
-  R = 500, 
+  R = 50, 
   counterfactual = "AB"
   )
 
