@@ -61,8 +61,6 @@ boot_nopodec_mean <- function(data, treatment, variables, y, weights = NULL, R =
 
   boot::boot(c01, f, R = R, stype = "i", strata = as.factor(c01[["strata2"]]), ...)  # c01$strata2
 }
-# boot_nopodec_mean(data = LL, treatment = "treated", variables = c("age", "married"), y = "re74", weights = "ones", R = 10)
-# boot_nopodec_mean(data = LL, treatment = "treated", variables = c("age", "married"), y = "re74", weights = "ones", R = 10, counterfactual = "BA")
 
 
 
