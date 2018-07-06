@@ -37,11 +37,10 @@ quantile_breaks <- function(x, probs = seq(0, 1, 0.25), na.rm = FALSE, ...){
 cut_c <- function(x, breaks = auto_breaks(x), include.lowest = TRUE, right = FALSE){
   cut(x, breaks = breaks, include.lowest = include.lowest, right = right)
 }
-# data(LL)
-# cut_c(LL$age)
-# cut_c(LL$age, include.lowest = FALSE, right = TRUE)
-# cut_c(LL$age, breaks = quantile_breaks(LL$age))
-# cut_c(LL$age, breaks = quantile_breaks(LL$age, probs = c(0, 0.1, 0.25, 0.5, 0.75, 0.9, 1)))
+# cut_c(rnorm(100))
+# cut_c(rnorm(100), include.lowest = FALSE, right = TRUE)
+# cut_c(rnorm(100), breaks = quantile_breaks(LL$age))
+# cut_c(rnorm(100), breaks = quantile_breaks(LL$age, probs = c(0, 0.1, 0.25, 0.5, 0.75, 0.9, 1)))
 
 
 
