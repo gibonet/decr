@@ -463,3 +463,217 @@ margin_difference.default <- function(.margin_stat, ...){
 # - attr(*, "weights")= chr "sample_weights"
 # - attr(*, "groups")= Named chr  "men" "women"
 # ..- attr(*, "names")= chr  "A" "B"
+
+
+
+
+#' Estimates quantiles of the y variable for the two groups, in and out the common support. 
+#' In the common support, counterfactual quantiles of y are estimated.
+#' It also estimates the number of individuals of the two groups.
+#' Moreover, marginal quantiles of the two groups are also computed.
+#'
+#' The results in the common support are all the components necessary
+#' to perform a decomposition of the quantile wage difference between
+#' two groups, in two components: one that can be explained by the
+#' difference in the distributions of characteristics between the two groups
+#' (delta_X), and one that cannot be explained by the different
+#' characteristics of the two groups (delta_S).
+#' 
+#' Note that this function estimates quantiles at different levels 
+#' simultaneously, while \code{\link{dec_quantile}} does only one quantile
+#' level.
+#'
+#' @param ... arguments passed to or from other methods.
+#' @export
+dec_quantiles <- function(...){
+  UseMethod("dec_quantiles")
+}
+
+
+#' @inheritParams nopodec_mean
+#' @param probs numeric vector with the desired quantile levels (all the values should be between 0 and 1). Default value: \code{c(0.25, 0.5, 0.75)}
+#'
+#' @return A data frame with four, five or six rows, with the following columns:
+#' \itemize{
+#' \item the name of the treatment column used in \code{\link{reweight_strata_all2}};
+#' \item \code{common_support} logical indicating if in or out the common support;
+#' \item \code{yhat} quantiles of the y variable, weighted by the given weights. This is a list where each element is a numeric vector with the estimates of the quantiles at all the levels given by the argument \code{probs};
+#' \item \code{yhat_C_A} counterfactual quantiles y of group A as if they had the same distribution of characteristics of group B. This is computed in the common support only and for group A individuals. It is computed with the weights \code{w_AB} that result from \code{\link{reweight_strata_all2}}. This is a list where each element is a numeric vector with the estimates of the quantiles at all the levels given by the argument \code{probs};
+#' \item \code{yhat_C_B} counterfactual quantiles y of group B as if they had the same distribution of characteristics of group A. This is computed in the common support only and for group B individuals. It is computed with the weights \code{w_BA} that result from \code{\link{reweight_strata_all2}}. This is a list where each element is a numeric vector with the estimates of the quantiles at all the levels given by the argument \code{probs};
+#' \item \code{Nhat} estimate of the number of individuals. This is a list where each element is a numeric vector of length one.
+#' }
+#' The number of rows is given by the combinations of the distinct values of
+#' the first two columns: \code{treatment} and \code{common_support}.
+#' In addition to these rows, there are two more rows at the end, with the 
+#' marginal quantiles of the two groups.
+#' In the "typical" case, the resulting data frame will have 4 rows. It can have three rows if all the individuals of one group are in the common support.
+#' In case of no common support or no out-of-support, the data frame will have two rows.
+#'
+#'
+#' @examples
+#' data(invented_wages)
+#'
+#' # Common support and computation of counterfactual weights
+#' r00 <- reweight_strata_all2(invented_wages, treatment = "gender",
+#'                        variables = c("sector", "education"),
+#'                        y = "wage", weights = "sample_weights")
+#'
+#' # Computation of the elements necessary to the decomposition
+#' dec_quantiles(r00)
+#' dec_quantiles(r00, probs = seq(0.05, 0.95, by = 0.05))
+#'
+#' @rdname dec_quantiles
+#' @export
+dec_quantiles.default <- function(.reweight_strata_all, y = NULL,
+                                  weights = NULL, probs = c(0.25, 0.5, 0.75), ...){
+  stopifnot(probs > 0 & probs < 1)
+  treatment <- attributes(.reweight_strata_all)[["treatment"]]
+  if (is.null(weights))
+    weights <- attributes(.reweight_strata_all)[["weights"]]
+  if (is.null(y))
+    y <- attributes(.reweight_strata_all)[["y"]]
+  
+  quantiles_partitions <- .reweight_strata_all %>%
+    gby_(c(treatment, "common_support")) %>%
+    dplyr::do_(
+      yhat = ~wq(.[[y]], .[[weights]], probs = probs),
+      yhat_C_A = ~wq(.[[y]], .[["w_AB"]], probs = probs),
+      yhat_C_B = ~wq(.[[y]], .[["w_BA"]], probs = probs),
+      Nhat = ~sum(.[[weights]])
+    ) %>% dplyr::ungroup()
+  
+  marginal_quantiles <- .reweight_strata_all %>%
+    gby_(treatment) %>%
+    dplyr::do_(
+      yhat = ~wq(.[[y]], .[[weights]], probs = probs),
+      Nhat = ~sum(.[[weights]])
+    ) %>% dplyr::ungroup()
+  
+  quantiles_partitions <- quantiles_partitions %>% dplyr::bind_rows(marginal_quantiles)
+  
+  attributes(quantiles_partitions)[["treatment"]] <- attributes(.reweight_strata_all)[["treatment"]]
+  attributes(quantiles_partitions)[["variables"]] <- attributes(.reweight_strata_all)[["variables"]]
+  attributes(quantiles_partitions)[["y"]] <- y
+  attributes(quantiles_partitions)[["weights"]] <- weights
+  attributes(quantiles_partitions)[["groups"]] <- attributes(.reweight_strata_all)[["groups"]]
+  attributes(quantiles_partitions)[["probs"]] <- probs
+  quantiles_partitions
+}
+
+
+
+
+
+#' @param .reweighted an object of class \code{reweighted} (the output of \code{\link{reweight_strata_all4}})
+#'
+#' @examples
+#' data(invented_wages)
+#' r00 <- reweight_strata_all4(invented_wages, treatment = "gender",
+#'                        variables = c("sector", "education"),
+#'                        y = "wage", weights = "sample_weights")
+#'
+#' str(r00)
+#' names(r00)
+#' class(r00)
+#'
+#' dec_quantiles(r00)
+#'
+#' @export
+#' @rdname dec_quantiles
+dec_quantiles.reweighted <- function(.reweighted, ...){
+  .reweight_strata_all <- .reweighted[[".reweight_strata_all"]]
+  dec_quantiles.default(.reweight_strata_all, ...)
+}
+
+
+
+# .dec_: output of dec_quantiles
+
+#' Performs decomposition of the quantile differences (of y) between two groups (in 2 components) in the common support.
+#'
+#' @param .dec_ output of \code{\link{dec_quantiles}}.
+#' @param counterfactual "AB" or "BA". "AB" means that we want to estimate the counterfactual (wage) of group A, as if their characteristics were distributed as in group B. "BA" is the opposite (characteristics of group B are balanced to those of group A).
+#'
+#' @return a data frame with the following columns:
+#'
+#' \itemize{
+#'   \item \code{probs}: the chosen quantile levels;
+#'   \item \code{delta_tot}: total observed difference between the quantiles (of wages)
+#'    of group A and B (all the sample);
+#'   \item \code{delta_tot_CS}: total observed difference between the quantiles (of wages)
+#'    of group A and B in the common support;
+#'   \item \code{delta_AB}: difference explained by the fact that the two groups 
+#'    have some combinations of characteristics that the other group has not.    
+#'   \item \code{delta_X}: part explained by the fact that the two groups have a
+#'    different distribution of characteristics (same combinations of characteristics)
+#'    but distributed differently);
+#'   \item \code{delta_S}: part not justified by the different distributions of the
+#'    characteristics of the two groups, and potentially due to a difference
+#'     in the remuneration structures between the two groups.
+#' }
+#'
+#' @examples
+#' data(invented_wages)
+#'
+#' # Common support and computation of counterfactual weights
+#' r00 <- reweight_strata_all2(invented_wages, treatment = "gender",
+#'                        variables = c("sector", "education"),
+#'                        y = "wage", weights = "sample_weights")
+#'
+#' # Computation of the elements necessary to the decompositions
+#' d00 <- dec_quantiles(r00)
+#'
+#' # Decomposition of the difference of the medians of the two groups
+#' # (in the common support) in two components
+#' dec_all_(d00)
+#'
+#' @export
+dec_all_ <- function(.dec_, counterfactual = c("AB", "BA")){
+  stopifnot(counterfactual[1] %in% c("AB", "BA"))
+  common_support <- "common_support"
+  .dec_cs <- .dec_ %>% filter2_(.dots = common_support)
+  treatment <- attributes(.dec_)[["treatment"]]
+  probs <- attributes(.dec_)[["probs"]]
+  if(is.factor(.dec_cs[[treatment]])) {
+    groups_ <- levels(.dec_cs[[treatment]])
+  }
+  else{
+    groups_ <- unique(.dec_cs[[treatment]])
+  }
+  sel_A <- lazyeval::interp(~x == y, x = as.name(treatment),
+                            y = groups_[1])
+  sel_B <- lazyeval::interp(~x == y, x = as.name(treatment),
+                            y = groups_[2])
+  perc_ <- lazyeval::interp(~x/sum(x), x = as.name("Nhat"))
+  yhat_A_in <- (.dec_cs %>% filter2_(sel_A))$yhat %>% lapply(function(x) as.data.frame(t(x))) %>% unlist()
+  yhat_B_in <- (.dec_cs %>% filter2_(sel_B))$yhat %>% lapply(function(x) as.data.frame(t(x))) %>% unlist()
+  yhat_AB_C <- (.dec_cs %>% filter2_(sel_A))$yhat_C_A %>% lapply(function(x) as.data.frame(t(x))) %>% unlist()
+  yhat_BA_C <- (.dec_cs %>% filter2_(sel_B))$yhat_C_B %>% lapply(function(x) as.data.frame(t(x))) %>% unlist()
+  counterfactual <- match.arg(counterfactual)
+  if(counterfactual == "AB"){
+    delta_X <- yhat_A_in - yhat_AB_C
+    delta_S <- yhat_AB_C - yhat_B_in
+  }
+  if(counterfactual == "BA"){
+    delta_S <- yhat_A_in - yhat_BA_C
+    delta_X <- yhat_BA_C - yhat_B_in
+  }
+  if(nrow(.dec_cs) == 0L && check_numeric_0(delta_S) && check_numeric_0(delta_X)) {
+    delta_S <- 0
+    delta_X <- 0
+    message("Note that in this case there is not common support between the characteristics of the two groups.")
+  }
+  delta_tot_CS <- delta_X + delta_S
+  
+  .dec_marginal <- .dec_ %>% filter2_(.dots = ~is.na(common_support))
+  yhat_A <- (.dec_marginal %>% filter2_(sel_A))$yhat %>% lapply(function(x) as.data.frame(t(x))) %>% unlist()
+  yhat_B <- (.dec_marginal %>% filter2_(sel_B))$yhat %>% lapply(function(x) as.data.frame(t(x))) %>% unlist()
+  delta_tot <- yhat_A - yhat_B
+  delta_AB <- delta_tot - delta_tot_CS
+  
+  # list(probs = probs, delta_tot = delta_tot, delta_tot_CS = delta_tot_CS,
+  #      delta_AB = delta_AB, delta_X = delta_X, delta_S = delta_S)
+  data.frame(probs = probs, delta_tot = delta_tot, delta_tot_CS = delta_tot_CS,
+             delta_AB = delta_AB, delta_X = delta_X, delta_S = delta_S)
+}
+
