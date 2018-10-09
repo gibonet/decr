@@ -70,7 +70,7 @@ nopodec <- function(.nopodec_, counterfactual = c("AB", "BA")){
 
   phat_AB_out <- .nopodec_ %>%
     gby_(treatment) %>%
-    dplyr::mutate_(.dots = stats::setNames(list(perc_), c("perc"))) %>%
+    mutate2_(.dots = stats::setNames(list(perc_), c("perc"))) %>%
     filter2_(.dots = sel_common_support)
 
   phat_A_out <- (phat_AB_out %>% filter2_(sel_A))$perc
@@ -152,7 +152,7 @@ nopodec_stat <- function(.nopodec_, counterfactual = c("AB", "BA"), stat = c("Fh
 
   phat_AB_out <- .nopodec_ %>%
     gby_(treatment) %>%
-    dplyr::mutate_(.dots = stats::setNames(list(perc_), c("perc"))) %>%
+    mutate2_(.dots = stats::setNames(list(perc_), c("perc"))) %>%
     filter2_(.dots = sel_common_support)
 
   phat_A_out <- (phat_AB_out %>% filter2_(sel_A))$perc

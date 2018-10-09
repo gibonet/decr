@@ -47,4 +47,4 @@ filter2_ <- function(.data, .dots){
 mutate2_ <- function(.data, ..., .dots){
   dplyr::mutate_(.data, ..., .dots = .dots)
 }
-# common_support2, reweight_strata_all2, boot_nopodec_mean, boot_nopodec_quantile
+# common_support2, reweight_strata_all2, boot_nopodec_mean, boot_nopodec_quantile, nopodec
