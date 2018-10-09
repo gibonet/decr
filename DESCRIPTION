@@ -5,7 +5,7 @@ Description: Tools to perform decompositions of differences between two groups
     (for example wage decompositions). Focus is on the common support between the
     distribution of the characteristics of the two groups. In the common support,
     counterfactuals can be estimated in order to perform the decomposition.
-Version: 0.0.7.9032
+Version: 0.0.7.9033
 License: MIT + file LICENSE
 Authors@R: c(
     person("Sandro", "Petrillo Burri", , "gibo.gaf@gmail.com", c("aut", "cre")),
@@ -44,4 +44,4 @@ Collate:
     "nopodec.R"
     "various_dec.R"
     "ZZ_bootstrap.R"
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0

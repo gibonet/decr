@@ -4,8 +4,8 @@
 \alias{boot_dec_quantile}
 \title{Bootstrap of the quantile decomposition procedure.}
 \usage{
-boot_dec_quantile(data, treatment, variables, y, weights = NULL, R = 10,
-  probs = 0.5, counterfactual = c("AB", "BA"), ...)
+boot_dec_quantile(data, treatment, variables, y, weights = NULL,
+  R = 10, probs = 0.5, counterfactual = c("AB", "BA"), ...)
 }
 \arguments{
 \item{data}{data frame}
