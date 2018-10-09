@@ -48,3 +48,15 @@ mutate2_ <- function(.data, ..., .dots){
   dplyr::mutate_(.data, ..., .dots = .dots)
 }
 # common_support2, reweight_strata_all2, boot_nopodec_mean, boot_nopodec_quantile, nopodec
+
+
+unite2_ <- function(data, col, from, remove){
+  tidyr::unite_(data = data, col = col,
+                from = from, remove = remove)
+}
+# common_support2
+
+spread2_ <- function(data, key, value){
+  tidyr::spread_(data = data, key = key, value = value)
+}
+# common_support2

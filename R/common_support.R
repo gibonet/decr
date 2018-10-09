@@ -28,9 +28,9 @@ common_support2 <- function(data, treatment, variables){
     gby_(.variables = c(treatment, variables)) %>%
     dplyr::summarise(n = n()) %>%
     dplyr::ungroup() %>%
-    tidyr::unite_(col = "strata",
+    unite2_(col = "strata",
                   from = variables, remove = FALSE) %>%
-    tidyr::spread_(key = treatment, value = "n")
+    spread2_(key = treatment, value = "n")
 
 #  n_diff <- NULL  # to avoid a NOTE from R CMD check (...)
   k <- ncol(joint_distr)
