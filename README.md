@@ -1,4 +1,9 @@
-# decr
+---
+title: decr
+output: github_document
+---
+
+
 
 [![Travis-CI Build Status](https://travis-ci.org/gibonet/decr.svg?branch=master)](https://travis-ci.org/gibonet/decr) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/decr)](http://cran.r-project.org/package=decr)
 
@@ -19,7 +24,7 @@ The decompositions in decr are performed nonparametrically with the reweighting 
 At the moment, `decr` is available only on github and can be installed with:
 
 ```
-devtools::install_github("gibonet/decr", build_vignettes = TRUE)
+remotes::install_github("gibonet/decr", build_vignettes = TRUE)
 ```
 
 It will be probably available on CRAN after some further testing.

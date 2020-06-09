@@ -60,17 +60,24 @@ nopodec <- function(.nopodec_, counterfactual = c("AB", "BA")){
     groups_ <- unique(.nopodec_[[treatment]])
   }
 
-  sel_A <- lazyeval::interp(~x == y, x = as.name(treatment), y = groups_[1])
-  sel_B <- lazyeval::interp(~x == y, x = as.name(treatment), y = groups_[2])
+  # sel_A <- lazyeval::interp(~x == y, x = as.name(treatment), y = groups_[1])
+  # sel_B <- lazyeval::interp(~x == y, x = as.name(treatment), y = groups_[2])
+  sel_A <- paste0(treatment, " == ", "\"", groups_[1], "\"")
+  sel_B <- paste0(treatment, " == ", "\"", groups_[2], "\"")
 
-  perc_ <- lazyeval::interp(~x / sum(x), x = as.name("Nhat"))
+  # perc_ <- lazyeval::interp(~x / sum(x), x = as.name("Nhat"))
+  Nhat <- rlang::sym("Nhat")
+  Nhat <- rlang::enquo(Nhat)
+  perc <- "perc"
 
   common_support <- "common_support"
-  sel_common_support <- lazyeval::interp(~!x, x = as.name(common_support))
+  # sel_common_support <- lazyeval::interp(~!x, x = as.name(common_support))
+  sel_common_support <- "!common_support"
 
   phat_AB_out <- .nopodec_ %>%
     gby_(treatment) %>%
-    mutate2_(.dots = stats::setNames(list(perc_), c("perc"))) %>%
+    dplyr::mutate(!! perc := !! Nhat / sum(!! Nhat)) %>%
+    # mutate2_(.dots = stats::setNames(list(perc_), c("perc"))) %>%
     filter2_(.dots = sel_common_support)
 
   phat_A_out <- (phat_AB_out %>% filter2_(sel_A))$perc
@@ -142,17 +149,24 @@ nopodec_stat <- function(.nopodec_, counterfactual = c("AB", "BA"), stat = c("Fh
     groups_ <- unique(.nopodec_[[treatment]])
   }
 
-  sel_A <- lazyeval::interp(~x == y, x = as.name(treatment), y = groups_[1])
-  sel_B <- lazyeval::interp(~x == y, x = as.name(treatment), y = groups_[2])
+  # sel_A <- lazyeval::interp(~x == y, x = as.name(treatment), y = groups_[1])
+  # sel_B <- lazyeval::interp(~x == y, x = as.name(treatment), y = groups_[2])
+  sel_A <- paste0(treatment, " == ", "\"", groups_[1], "\"")
+  sel_B <- paste0(treatment, " == ", "\"", groups_[2], "\"")
 
-  perc_ <- lazyeval::interp(~x / sum(x), x = as.name("Nhat"))
+  # perc_ <- lazyeval::interp(~x / sum(x), x = as.name("Nhat"))
+  Nhat <- rlang::sym("Nhat")
+  Nhat <- rlang::enquo(Nhat)
+  perc <- "perc"
 
   common_support <- "common_support"
-  sel_common_support <- lazyeval::interp(~!x, x = as.name(common_support))
+  # sel_common_support <- lazyeval::interp(~!x, x = as.name(common_support))
+  sel_common_support <- "!common_support"
 
   phat_AB_out <- .nopodec_ %>%
     gby_(treatment) %>%
-    mutate2_(.dots = stats::setNames(list(perc_), c("perc"))) %>%
+    dplyr::mutate(!! perc := !! Nhat / sum(!! Nhat)) %>%
+    # mutate2_(.dots = stats::setNames(list(perc_), c("perc"))) %>%
     filter2_(.dots = sel_common_support)
 
   phat_A_out <- (phat_AB_out %>% filter2_(sel_A))$perc

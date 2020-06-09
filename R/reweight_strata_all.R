@@ -57,11 +57,19 @@ reweight_strata_all2 <- function(data, treatment, variables, y, weights = NULL){
   .cs_strata$rw_AB[k_BA] <- 1
   .cs_strata$rw_BA[k_out] <- 1
   .cs_strata$rw_AB[k_out] <- 1
-  mut1 <- lazyeval::interp(~w * rw_BA, w = as.name(weights))
-  mut2 <- lazyeval::interp(~w * rw_AB, w = as.name(weights))
+  # mut1 <- lazyeval::interp(~w * rw_BA, w = as.name(weights))
+  # mut2 <- lazyeval::interp(~w * rw_AB, w = as.name(weights))
+  w <- rlang::sym(weights)
+  w <- rlang::enquo(w)
+  w_BA <- "w_BA"; w_AB <- "w_AB"
+  rw_BA <- rw_AB <- NULL  # R CMD NOTE
+
   .cs_strata <- .cs_strata %>%
-    mutate2_(.dots = stats::setNames(
-      list(mut1, mut2), c("w_BA", "w_AB")))
+    # mutate2_(.dots = stats::setNames(
+    #   list(mut1, mut2), c("w_BA", "w_AB")))
+    dplyr::mutate(
+      !! w_BA := (!!w) * rw_BA, !! w_AB := (!!w) * rw_AB
+    )
 
   names(groups_) <- c("A", "B")
   attributes(.cs_strata)[["treatment"]] <- treatment
@@ -80,7 +88,7 @@ reweight_strata_all2 <- function(data, treatment, variables, y, weights = NULL){
 reweight_strata_all3 <- function(.cs_strata){
   treatment <- attributes(.cs_strata)[["treatment"]]
   weights <- attributes(.cs_strata)[["weights"]]
-  
+
   variables <- attributes(.cs_strata)[["variables"]]  # prova
   y <- attributes(.cs_strata)[["y"]]  # prova
 
@@ -106,24 +114,32 @@ reweight_strata_all3 <- function(.cs_strata){
   .cs_strata$rw_AB[k_BA] <- 1
   .cs_strata$rw_BA[k_out] <- 1
   .cs_strata$rw_AB[k_out] <- 1
-  mut1 <- lazyeval::interp(~w * rw_BA, w = as.name(weights))
-  mut2 <- lazyeval::interp(~w * rw_AB, w = as.name(weights))
+  # mut1 <- lazyeval::interp(~w * rw_BA, w = as.name(weights))
+  # mut2 <- lazyeval::interp(~w * rw_AB, w = as.name(weights))
+  w <- rlang::sym(weights)
+  w <- rlang::enquo(w)
+  w_BA <- "w_BA"; w_AB <- "w_AB"
+  rw_BA <- rw_AB <- NULL  # R CMD NOTE
+
   .cs_strata <- .cs_strata %>%
-    mutate2_(.dots = stats::setNames(
-      list(mut1, mut2), c("w_BA", "w_AB")))
+    # mutate2_(.dots = stats::setNames(
+    #   list(mut1, mut2), c("w_BA", "w_AB")))
+    dplyr::mutate(
+      !! w_BA := (!!w) * rw_BA, !! w_AB := (!!w) * rw_AB
+    )
   attributes(.cs_strata)[["weights"]] <- weights
-  
+
   # ---------------------------------------------------#
   # PROVA
   names(groups_) <- c("A", "B")
-  
+
   attributes(.cs_strata)[["treatment"]] <- treatment
   attributes(.cs_strata)[["variables"]] <- variables
   attributes(.cs_strata)[["y"]] <- y
   attributes(.cs_strata)[["weights"]] <- weights
   attributes(.cs_strata)[["groups"]] <- groups_
   # ---------------------------------------------------#
-  
+
   .cs_strata
 }
 
@@ -152,8 +168,9 @@ resample_cs_strata2 <- function(.cs_strata){
   . <- NULL
 
   cs_strata_r <- .cs_strata %>%
-    dplyr::group_by_(.dots = c(treatment, common_support)) %>%
-    dplyr::do_(~dplyr::sample_n(., size = nrow(.), replace = TRUE)) %>%
+    gby_(c(treatment, common_support)) %>%
+    # dplyr::do_(~dplyr::sample_n(., size = nrow(.), replace = TRUE)) %>%
+    dplyr::do(dplyr::sample_n(., size = nrow(.), replace = TRUE)) %>%
     dplyr::ungroup()
 
   attributes(cs_strata_r)[["treatment"]] <- treatment
@@ -175,8 +192,9 @@ resample_cs_strata3 <- function(.cs_strata){
   strata <- "strata"
 
   cs_strata_r <- .cs_strata %>%
-    dplyr::group_by_(.dots = c(treatment, strata)) %>%
-    dplyr::do_(~dplyr::sample_n(., size = nrow(.), replace = TRUE)) %>%
+    gby_(c(treatment, strata)) %>%
+    # dplyr::do_(~dplyr::sample_n(., size = nrow(.), replace = TRUE)) %>%
+    dplyr::do(dplyr::sample_n(., size = nrow(.), replace = TRUE)) %>%
     dplyr::ungroup()
 
   attributes(cs_strata_r)[["treatment"]] <- treatment
@@ -251,11 +269,19 @@ reweight_strata_all4 <- function(data, treatment, variables, y, weights = NULL){
   .cs_strata$rw_AB[k_BA] <- 1
   .cs_strata$rw_BA[k_out] <- 1
   .cs_strata$rw_AB[k_out] <- 1
-  mut1 <- lazyeval::interp(~w * rw_BA, w = as.name(weights))
-  mut2 <- lazyeval::interp(~w * rw_AB, w = as.name(weights))
+  # mut1 <- lazyeval::interp(~w * rw_BA, w = as.name(weights))
+  # mut2 <- lazyeval::interp(~w * rw_AB, w = as.name(weights))
+  w <- rlang::sym(weights)
+  w <- rlang::enquo(w)
+  w_BA <- "w_BA"; w_AB <- "w_AB"
+  rw_BA <- rw_AB <- NULL  # R CMD NOTE
+
   .cs_strata <- .cs_strata %>%
-    mutate2_(.dots = stats::setNames(
-      list(mut1, mut2), c("w_BA", "w_AB")))
+    # mutate2_(.dots = stats::setNames(
+    #   list(mut1, mut2), c("w_BA", "w_AB")))
+    dplyr::mutate(
+      !! w_BA := (!!w) * rw_BA, !! w_AB := (!!w) * rw_AB
+    )
 
   names(groups_) <- c("A", "B")
   attributes(.cs_strata)[["treatment"]] <- treatment

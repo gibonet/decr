@@ -32,9 +32,9 @@ dec_median <- function(...){
 #' }
 #' The number of rows is given by the combinations of the distinct values of
 #' the first two columns: \code{treatment} and \code{common_support}.
-#' In addition to these rows, there are two more rows at the end, with the 
+#' In addition to these rows, there are two more rows at the end, with the
 #' marginal medians of the two groups.
-#' In the "typical" case, the resulting data frame will have 4 rows. It can have 
+#' In the "typical" case, the resulting data frame will have 4 rows. It can have
 #' three rows if all the individuals of one group are in the common support.
 #' In case of no common support or no out-of-support, the data frame will have two rows.
 #'
@@ -81,7 +81,7 @@ dec_median.reweighted <- function(.reweighted, ...){
 
 
 
-#' Estimates quantiles of the y variable for the two groups, in and out the common support. 
+#' Estimates quantiles of the y variable for the two groups, in and out the common support.
 #' In the common support, counterfactual quantiles of y are estimated.
 #' It also estimates the number of individuals of the two groups.
 #' Moreover, marginal quantiles of the two groups are also computed.
@@ -115,7 +115,7 @@ dec_quantile <- function(...){
 #' }
 #' The number of rows is given by the combinations of the distinct values of
 #' the first two columns: \code{treatment} and \code{common_support}.
-#' In addition to these rows, there are two more rows at the end, with the 
+#' In addition to these rows, there are two more rows at the end, with the
 #' marginal quantiles of the two groups.
 #' In the "typical" case, the resulting data frame will have 4 rows. It can have three rows if all the individuals of one group are in the common support.
 #' In case of no common support or no out-of-support, the data frame will have two rows.
@@ -143,20 +143,32 @@ dec_quantile.default <- function(.reweight_strata_all, y = NULL, weights = NULL,
   if(is.null(y)) y <- attributes(.reweight_strata_all)[["y"]]
 
   # Preparazioni per summarise_
-  yhat_marginals <- lazyeval::interp(~wq(x, w, probs = probs),
-                                     x = as.name(y), w = as.name(weights))
-  yhat_counterfactual_A <- lazyeval::interp(~wq(x, w_AB, probs = probs),
-                                            x = as.name(y))
-  yhat_counterfactual_B <- lazyeval::interp(~wq(x, w_BA, probs = probs),
-                                            x = as.name(y))
-  nhat <- lazyeval::interp(~sum(w), w = as.name(weights))
+  # yhat_marginals <- lazyeval::interp(~wq(x, w, probs = probs),
+  #                                    x = as.name(y), w = as.name(weights))
+  # yhat_counterfactual_A <- lazyeval::interp(~wq(x, w_AB, probs = probs),
+  #                                           x = as.name(y))
+  # yhat_counterfactual_B <- lazyeval::interp(~wq(x, w_BA, probs = probs),
+  #                                           x = as.name(y))
+  # nhat <- lazyeval::interp(~sum(w), w = as.name(weights))
+  y_sim <- rlang::sym(y); w_sim <- rlang::sym(weights)
+  w_AB <- rlang::sym("w_AB"); w_BA <- rlang::sym("w_BA")
+  y_sim <- rlang::enquo(y_sim); w_sim <- rlang::enquo(w_sim)
+  w_AB <- rlang::enquo(w_AB); w_BA <- rlang::enquo(w_BA)
+
+  yhat <- "yhat"; yhat_C_A <- "yhat_C_A"; yhat_C_B <- "yhat_C_B"; Nhat <- "Nhat"
 
   # Quantili partitions
   quantiles_partitions <- .reweight_strata_all %>%
     gby_(c(treatment, "common_support")) %>%
-    summarise2_(.dots = stats::setNames(
-      list(yhat_marginals, yhat_counterfactual_A, yhat_counterfactual_B, nhat),
-      c("yhat", "yhat_C_A", "yhat_C_B", "Nhat")))
+    # summarise2_(.dots = stats::setNames(
+    #   list(yhat_marginals, yhat_counterfactual_A, yhat_counterfactual_B, nhat),
+    #   c("yhat", "yhat_C_A", "yhat_C_B", "Nhat")))
+    dplyr::summarise(
+      !! yhat := wq(!! y_sim, !! w_sim, probs = probs),
+      !! yhat_C_A := wq(!! y_sim, !! w_AB, probs = probs),
+      !! yhat_C_B := wq(!! y_sim, !! w_BA, probs = probs),
+      !! Nhat := sum(!! w_sim)
+    )
 
   # Quantili marginali
 #   quantiles_marginali <- .reweight_strata_all %>%
@@ -223,8 +235,8 @@ dec_quantile.reweighted <- function(.reweighted, ...){
 #'    of group A and B (all the sample);
 #'   \item \code{delta_tot_CS}: total observed difference between the quantiles (of wages)
 #'    of group A and B in the common support;
-#'   \item \code{delta_AB}: difference explained by the fact that the two groups 
-#'    have some combinations of characteristics that the other group has not.    
+#'   \item \code{delta_AB}: difference explained by the fact that the two groups
+#'    have some combinations of characteristics that the other group has not.
 #'   \item \code{delta_X}: part explained by the fact that the two groups have a
 #'    different distribution of characteristics (same combinations of characteristics)
 #'    but distributed differently);
@@ -262,10 +274,13 @@ dec_ <- function(.dec_, counterfactual = c("AB", "BA")){
     groups_ <- unique(.dec_cs[[treatment]])
   }
 
-  sel_A <- lazyeval::interp(~x == y, x = as.name(treatment), y = groups_[1])
-  sel_B <- lazyeval::interp(~x == y, x = as.name(treatment), y = groups_[2])
+  # sel_A <- lazyeval::interp(~x == y, x = as.name(treatment), y = groups_[1])
+  # sel_B <- lazyeval::interp(~x == y, x = as.name(treatment), y = groups_[2])
 
-  perc_ <- lazyeval::interp(~x / sum(x), x = as.name("Nhat"))
+  sel_A <- paste0(treatment, " == ", "\"", groups_[1], "\"")
+  sel_B <- paste0(treatment, " == ", "\"", groups_[2], "\"")
+
+  # perc_ <- lazyeval::interp(~x / sum(x), x = as.name("Nhat"))
 
   yhat_A_in <- (.dec_cs %>% filter2_(sel_A))$yhat
   yhat_B_in <- (.dec_cs %>% filter2_(sel_B))$yhat
@@ -290,7 +305,7 @@ dec_ <- function(.dec_, counterfactual = c("AB", "BA")){
     delta_X <- yhat_BA_C - yhat_B_in
   }
 
-  if(nrow(.dec_cs) == 0L && check_numeric_0(delta_S) && 
+  if(nrow(.dec_cs) == 0L && check_numeric_0(delta_S) &&
      check_numeric_0(delta_X)){
     delta_S <- 0
     delta_X <- 0
@@ -298,14 +313,15 @@ dec_ <- function(.dec_, counterfactual = c("AB", "BA")){
   }
 
   delta_tot_CS <- delta_X + delta_S
-  .dec_marginal <- .dec_ %>% filter2_(.dots = ~is.na(common_support))
+  # .dec_marginal <- .dec_ %>% filter2_(.dots = ~is.na(common_support))
+  .dec_marginal <- .dec_ %>% filter2_("is.na(common_support)")
   yhat_A <- (.dec_marginal %>% filter2_(sel_A))$yhat
   yhat_B <- (.dec_marginal %>% filter2_(sel_B))$yhat
   delta_tot <- yhat_A - yhat_B
-  
+
   delta_AB <- delta_tot - delta_tot_CS
 
-  list(probs = probs, delta_tot = delta_tot, delta_tot_CS = delta_tot_CS, 
+  list(probs = probs, delta_tot = delta_tot, delta_tot_CS = delta_tot_CS,
        delta_AB = delta_AB, delta_X = delta_X, delta_S = delta_S)
 }
 
@@ -352,17 +368,26 @@ margin_quantile.default <- function(.reweight_strata_all, y = NULL, weights = NU
   if(is.null(y)) y <- attributes(.reweight_strata_all)[["y"]]
 
   # Preparazioni per summarise_
-  yhat_marginals <- lazyeval::interp(~wq(x, w, probs = probs),
-                                     x = as.name(y), w = as.name(weights))
+  # yhat_marginals <- lazyeval::interp(~wq(x, w, probs = probs),
+  #                                    x = as.name(y), w = as.name(weights))
+  #
+  # nhat <- lazyeval::interp(~sum(w), w = as.name(weights))
+  y_sim <- rlang::sym(y); w_sim <- rlang::sym(weights)
+  y_sim <- rlang::enquo(y_sim); w_sim <- rlang::enquo(w_sim)
 
-  nhat <- lazyeval::interp(~sum(w), w = as.name(weights))
+  yhat <- "yhat"; Nhat <- "Nhat"
 
   # Quantili marginali
   quantiles_marginali <- .reweight_strata_all %>%
     gby_(treatment) %>%
-    summarise2_(.dots = stats::setNames(
-      list(yhat_marginals, nhat),
-      c("yhat", "Nhat")))
+    # summarise2_(.dots = stats::setNames(
+    #   list(yhat_marginals, nhat),
+    #   c("yhat", "Nhat")))
+    dplyr::summarise(
+      !! yhat := wq(!! y_sim, !! w_sim, probs = probs),
+      !! Nhat := sum(!! w_sim)
+    )
+
 
   quantiles_marginali <- quantiles_marginali %>%
     dplyr::ungroup() %>%
@@ -467,7 +492,7 @@ margin_difference.default <- function(.margin_stat, ...){
 
 
 
-#' Estimates quantiles of the y variable for the two groups, in and out the common support. 
+#' Estimates quantiles of the y variable for the two groups, in and out the common support.
 #' In the common support, counterfactual quantiles of y are estimated.
 #' It also estimates the number of individuals of the two groups.
 #' Moreover, marginal quantiles of the two groups are also computed.
@@ -478,8 +503,8 @@ margin_difference.default <- function(.margin_stat, ...){
 #' difference in the distributions of characteristics between the two groups
 #' (delta_X), and one that cannot be explained by the different
 #' characteristics of the two groups (delta_S).
-#' 
-#' Note that this function estimates quantiles at different levels 
+#'
+#' Note that this function estimates quantiles at different levels
 #' simultaneously, while \code{\link{dec_quantile}} does only one quantile
 #' level.
 #'
@@ -504,7 +529,7 @@ dec_quantiles <- function(...){
 #' }
 #' The number of rows is given by the combinations of the distinct values of
 #' the first two columns: \code{treatment} and \code{common_support}.
-#' In addition to these rows, there are two more rows at the end, with the 
+#' In addition to these rows, there are two more rows at the end, with the
 #' marginal quantiles of the two groups.
 #' In the "typical" case, the resulting data frame will have 4 rows. It can have three rows if all the individuals of one group are in the common support.
 #' In case of no common support or no out-of-support, the data frame will have two rows.
@@ -532,25 +557,37 @@ dec_quantiles.default <- function(.reweight_strata_all, y = NULL,
     weights <- attributes(.reweight_strata_all)[["weights"]]
   if (is.null(y))
     y <- attributes(.reweight_strata_all)[["y"]]
-  
+
+  . <- NULL
   quantiles_partitions <- .reweight_strata_all %>%
     gby_(c(treatment, "common_support")) %>%
-    dplyr::do_(
-      yhat = ~wq(.[[y]], .[[weights]], probs = probs),
-      yhat_C_A = ~wq(.[[y]], .[["w_AB"]], probs = probs),
-      yhat_C_B = ~wq(.[[y]], .[["w_BA"]], probs = probs),
-      Nhat = ~sum(.[[weights]])
+    # dplyr::do_(
+    #   yhat = ~wq(.[[y]], .[[weights]], probs = probs),
+    #   yhat_C_A = ~wq(.[[y]], .[["w_AB"]], probs = probs),
+    #   yhat_C_B = ~wq(.[[y]], .[["w_BA"]], probs = probs),
+    #   Nhat = ~sum(.[[weights]])
+    # ) %>% dplyr::ungroup()
+    dplyr::do(
+      yhat = wq(.[[y]], .[[weights]], probs = probs),
+      yhat_C_A = wq(.[[y]], .[["w_AB"]], probs = probs),
+      yhat_C_B = wq(.[[y]], .[["w_BA"]], probs = probs),
+      Nhat = sum(.[[weights]])
     ) %>% dplyr::ungroup()
-  
+
+
   marginal_quantiles <- .reweight_strata_all %>%
     gby_(treatment) %>%
-    dplyr::do_(
-      yhat = ~wq(.[[y]], .[[weights]], probs = probs),
-      Nhat = ~sum(.[[weights]])
+    # dplyr::do_(
+    #   yhat = ~wq(.[[y]], .[[weights]], probs = probs),
+    #   Nhat = ~sum(.[[weights]])
+    # ) %>% dplyr::ungroup()
+    dplyr::do(
+      yhat = wq(.[[y]], .[[weights]], probs = probs),
+      Nhat = sum(.[[weights]])
     ) %>% dplyr::ungroup()
-  
+
   quantiles_partitions <- quantiles_partitions %>% dplyr::bind_rows(marginal_quantiles)
-  
+
   attributes(quantiles_partitions)[["treatment"]] <- attributes(.reweight_strata_all)[["treatment"]]
   attributes(quantiles_partitions)[["variables"]] <- attributes(.reweight_strata_all)[["variables"]]
   attributes(quantiles_partitions)[["y"]] <- y
@@ -602,8 +639,8 @@ dec_quantiles.reweighted <- function(.reweighted, ...){
 #'    of group A and B (all the sample);
 #'   \item \code{delta_tot_CS}: total observed difference between the quantiles (of wages)
 #'    of group A and B in the common support;
-#'   \item \code{delta_AB}: difference explained by the fact that the two groups 
-#'    have some combinations of characteristics that the other group has not.    
+#'   \item \code{delta_AB}: difference explained by the fact that the two groups
+#'    have some combinations of characteristics that the other group has not.
 #'   \item \code{delta_X}: part explained by the fact that the two groups have a
 #'    different distribution of characteristics (same combinations of characteristics)
 #'    but distributed differently);
@@ -640,11 +677,14 @@ dec_all_ <- function(.dec_, counterfactual = c("AB", "BA")){
   else{
     groups_ <- unique(.dec_cs[[treatment]])
   }
-  sel_A <- lazyeval::interp(~x == y, x = as.name(treatment),
-                            y = groups_[1])
-  sel_B <- lazyeval::interp(~x == y, x = as.name(treatment),
-                            y = groups_[2])
-  perc_ <- lazyeval::interp(~x/sum(x), x = as.name("Nhat"))
+  # sel_A <- lazyeval::interp(~x == y, x = as.name(treatment),
+  #                           y = groups_[1])
+  # sel_B <- lazyeval::interp(~x == y, x = as.name(treatment),
+  #                           y = groups_[2])
+  sel_A <- paste0(treatment, " == ", "\"", groups_[1], "\"")
+  sel_B <- paste0(treatment, " == ", "\"", groups_[2], "\"")
+
+  # perc_ <- lazyeval::interp(~x/sum(x), x = as.name("Nhat"))
   yhat_A_in <- (.dec_cs %>% filter2_(sel_A))$yhat %>% lapply(function(x) as.data.frame(t(x))) %>% unlist()
   yhat_B_in <- (.dec_cs %>% filter2_(sel_B))$yhat %>% lapply(function(x) as.data.frame(t(x))) %>% unlist()
   yhat_AB_C <- (.dec_cs %>% filter2_(sel_A))$yhat_C_A %>% lapply(function(x) as.data.frame(t(x))) %>% unlist()
@@ -664,13 +704,13 @@ dec_all_ <- function(.dec_, counterfactual = c("AB", "BA")){
     message("Note that in this case there is not common support between the characteristics of the two groups.")
   }
   delta_tot_CS <- delta_X + delta_S
-  
+
   .dec_marginal <- .dec_ %>% filter2_(.dots = ~is.na(common_support))
   yhat_A <- (.dec_marginal %>% filter2_(sel_A))$yhat %>% lapply(function(x) as.data.frame(t(x))) %>% unlist()
   yhat_B <- (.dec_marginal %>% filter2_(sel_B))$yhat %>% lapply(function(x) as.data.frame(t(x))) %>% unlist()
   delta_tot <- yhat_A - yhat_B
   delta_AB <- delta_tot - delta_tot_CS
-  
+
   # list(probs = probs, delta_tot = delta_tot, delta_tot_CS = delta_tot_CS,
   #      delta_AB = delta_AB, delta_X = delta_X, delta_S = delta_S)
   data.frame(probs = probs, delta_tot = delta_tot, delta_tot_CS = delta_tot_CS,

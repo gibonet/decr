@@ -5,7 +5,7 @@
 # with values TRUE if there is at least one missing value (NA) in the
 # corresponding row of the data, and FALSE if there are no missing values.
 check_NA_ <- function(data, variables){
-  k <- data %>% dplyr::select_(.dots = variables) %>% lapply(is.na)
+  k <- data %>% select2_(variables) %>% lapply(is.na)
   k <- Reduce("|", k)
   k
 }
@@ -45,7 +45,7 @@ cut_c <- function(x, breaks = auto_breaks(x), include.lowest = TRUE, right = FAL
 
 
 create_classes <- function(data, variables = colnames(data), ...){
-  tmp <- data %>% dplyr::select_(.dots = variables)
+  tmp <- data %>% select2_(variables)
 
   col_t <- sapply(tmp, typeof)
 

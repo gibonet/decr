@@ -36,25 +36,35 @@
 #'
 #' @export
 reweight_strata2 <- function(.fhat_strata){
-  dots_s <- list(
-    lazyeval::interp(~var[1] / var[2], var = as.name("fhat")),
-    lazyeval::interp(~var[2] / var[1], var = as.name("fhat")),
-    lazyeval::interp(~var[1], var = as.name("fhat")),
-    lazyeval::interp(~var[2], var = as.name("fhat"))
-  )
+  # dots_s <- list(
+  #   lazyeval::interp(~var[1] / var[2], var = as.name("fhat")),
+  #   lazyeval::interp(~var[2] / var[1], var = as.name("fhat")),
+  #   lazyeval::interp(~var[1], var = as.name("fhat")),
+  #   lazyeval::interp(~var[2], var = as.name("fhat"))
+  # )
 
   strata <- "strata"
   common_support <- "common_support"
   #   strata <- NULL # to avoid a NOTE from R CMD check (...)
   #   fhat <- NULL   # to avoid a NOTE from R CMD check (...)
+  rw_BA <- "rw_BA"; rw_AB <- "rw_AB"; f_A <- "f_A"; f_B <- "f_B"
+  fhat <- rlang::sym("fhat")
+  fhat <- rlang::enquo(fhat)
+
   .fhat_strata %>%
     filter2_(.dots = common_support) %>%
     gby_(strata) %>%
-    summarise2_(
-      .dots = stats::setNames(
-        dots_s,
-        c("rw_BA", "rw_AB", "f_A", "f_B")
-      )
+    # summarise2_(
+    #   .dots = stats::setNames(
+    #     dots_s,
+    #     c("rw_BA", "rw_AB", "f_A", "f_B")
+    #   )
+    # )
+    dplyr::summarise(
+      !! rw_BA := `[`(!! fhat, 1) / `[`(!! fhat, 2),   # fhat[1] / fhat[2]
+      !! rw_AB := `[`(!! fhat, 2) / `[`(!! fhat, 1),   # fhat[2] / fhat[1]
+      !! f_A := `[`(!! fhat, 1),
+      !! f_B := `[`(!! fhat, 2)
     )
 }
 

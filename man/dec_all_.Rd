@@ -20,8 +20,8 @@ a data frame with the following columns:
    of group A and B (all the sample);
   \item \code{delta_tot_CS}: total observed difference between the quantiles (of wages)
    of group A and B in the common support;
-  \item \code{delta_AB}: difference explained by the fact that the two groups 
-   have some combinations of characteristics that the other group has not.    
+  \item \code{delta_AB}: difference explained by the fact that the two groups
+   have some combinations of characteristics that the other group has not.
   \item \code{delta_X}: part explained by the fact that the two groups have a
    different distribution of characteristics (same combinations of characteristics)
    but distributed differently);

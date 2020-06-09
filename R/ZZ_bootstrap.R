@@ -49,11 +49,19 @@ fun_boot_mean <- function(y, counterfactual = c("AB", "BA")){
 #' @export
 boot_nopodec_mean <- function(data, treatment, variables, y, weights = NULL, R = 10, counterfactual = c("AB", "BA"), ...){
   c01 <- common_support_strata2(data, treatment, variables, y, weights)
-  dots_mutate <- lazyeval::interp(~paste(x1, x2, sep = "_"),
-                                  x1 = as.name("strata"),
-                                  x2 = as.name(treatment))
+  # dots_mutate <- lazyeval::interp(~paste(x1, x2, sep = "_"),
+  #                                 x1 = as.name("strata"),
+  #                                 x2 = as.name(treatment))
+  x1 <- rlang::sym("strata")
+  x2 <- rlang::sym(treatment)
+  x1 <- rlang::enquo(x1)
+  x2 <- rlang::enquo(x2)
+
+  strata2 <- "strata2"
+
   c01 <- c01 %>%
-    mutate2_(.dots = stats::setNames(list(dots_mutate), c("strata2")))
+    dplyr::mutate(!! strata2 := paste(!!x1, !!x2, sep = "_"))
+    # mutate2_(.dots = stats::setNames(list(dots_mutate), c("strata2")))
   attributes(c01)[["weights"]] <- weights
   attributes(c01)[["treatment"]] <- treatment
 
@@ -103,11 +111,20 @@ fun_boot_quantile <- function(y, probs = 0.5, counterfactual = c("AB", "BA")){
 #' @export
 boot_dec_quantile <- function(data, treatment, variables, y, weights = NULL, R = 10, probs = 0.5, counterfactual = c("AB", "BA"), ...){
   c01 <- common_support_strata2(data, treatment, variables, y, weights)
-  dots_mutate <- lazyeval::interp(~paste(x1, x2, sep = "_"),
-                                  x1 = as.name("strata"),
-                                  x2 = as.name(treatment))
+  # dots_mutate <- lazyeval::interp(~paste(x1, x2, sep = "_"),
+  #                                 x1 = as.name("strata"),
+  #                                 x2 = as.name(treatment))
+  x1 <- rlang::sym("strata")
+  x2 <- rlang::sym(treatment)
+  x1 <- rlang::enquo(x1)
+  x2 <- rlang::enquo(x2)
+
+  strata2 <- "strata2"
+
   c01 <- c01 %>%
-    mutate2_(.dots = stats::setNames(list(dots_mutate), c("strata2")))
+    dplyr::mutate(!! strata2 := paste(!!x1, !!x2, sep = "_"))
+  # mutate2_(.dots = stats::setNames(list(dots_mutate), c("strata2")))
+
   attributes(c01)[["weights"]] <- weights
   attributes(c01)[["treatment"]] <- treatment
 
@@ -123,19 +140,19 @@ fun_boot_quantiles <- function(y, probs = c(0.25, 0.5, 0.75), counterfactual = c
   function(data, i){
     treatment <- attributes(data)[["treatment"]]
     weights <- attributes(data)[["weights"]]
-    
+
     d <- data[i, ]
     attributes(d)[["weights"]] <- weights
     attributes(d)[["treatment"]] <- treatment
-    
+
     rtmp <- reweight_strata_all3(d)
-    
+
     stmp <- dec_quantiles(rtmp, y = y, weights = weights, probs = probs)
     stmp_dec <- dec_all_(stmp, counterfactual = counterfactual[1])
-    
+
     # Via la prima colonna (con i livelli dei quantili)
     stmp_dec <- stmp_dec[ , -1, drop = FALSE]
-    
+
     # Trasforma il data frame in un vettore
     stmp_dec_vector <- unlist(stmp_dec)
     stmp_dec_vector
@@ -143,19 +160,28 @@ fun_boot_quantiles <- function(y, probs = c(0.25, 0.5, 0.75), counterfactual = c
 }
 
 
-boot_dec_quantiles <- function(data, treatment, variables, y, weights = NULL, 
-                               R = 10, probs = c(0.25, 0.5, 0.75), 
+boot_dec_quantiles <- function(data, treatment, variables, y, weights = NULL,
+                               R = 10, probs = c(0.25, 0.5, 0.75),
                                counterfactual = c("AB", "BA"), ...){
   c01 <- common_support_strata2(data, treatment, variables, y, weights)
-  dots_mutate <- lazyeval::interp(~paste(x1, x2, sep = "_"),
-                                  x1 = as.name("strata"),
-                                  x2 = as.name(treatment))
+  # dots_mutate <- lazyeval::interp(~paste(x1, x2, sep = "_"),
+  #                                 x1 = as.name("strata"),
+  #                                 x2 = as.name(treatment))
+  x1 <- rlang::sym("strata")
+  x2 <- rlang::sym(treatment)
+  x1 <- rlang::enquo(x1)
+  x2 <- rlang::enquo(x2)
+
+  strata2 <- "strata2"
+
   c01 <- c01 %>%
-    mutate2_(.dots = stats::setNames(list(dots_mutate), c("strata2")))
+    dplyr::mutate(!! strata2 := paste(!!x1, !!x2, sep = "_"))
+  # mutate2_(.dots = stats::setNames(list(dots_mutate), c("strata2")))
+
   attributes(c01)[["weights"]] <- weights
   attributes(c01)[["treatment"]] <- treatment
-  
+
   f <- fun_boot_quantiles(y = y, probs = probs, counterfactual = counterfactual)
-  
+
   boot::boot(c01, f, R = R, stype = "i", strata = as.factor(c01[["strata2"]]), ...)
 }

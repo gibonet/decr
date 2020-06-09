@@ -50,21 +50,33 @@ nopodec_mean.default <- function(.reweight_strata_all, y = NULL, weights = NULL,
   if(is.null(y)) y <- attributes(.reweight_strata_all)[["y"]]
 
   # Preparazioni per summarise_
-  ybar_marginals <- lazyeval::interp(~stats::weighted.mean(x, w),
-                                     x = as.name(y), w = as.name(weights))
-  ybar_counterfactual_A <- lazyeval::interp(~stats::weighted.mean(x, w_AB),
-                                            x = as.name(y))
-  ybar_counterfactual_B <- lazyeval::interp(~stats::weighted.mean(x, w_BA),
-                                            x = as.name(y))
-  nhat <- lazyeval::interp(~sum(w), w = as.name(weights))
+  # ybar_marginals <- lazyeval::interp(~stats::weighted.mean(x, w),
+  #                                    x = as.name(y), w = as.name(weights))
+  # ybar_counterfactual_A <- lazyeval::interp(~stats::weighted.mean(x, w_AB),
+  #                                           x = as.name(y))
+  # ybar_counterfactual_B <- lazyeval::interp(~stats::weighted.mean(x, w_BA),
+  #                                           x = as.name(y))
+  # nhat <- lazyeval::interp(~sum(w), w = as.name(weights))
+
+  y_sim <- rlang::sym(y); w_sim <- rlang::sym(weights)
+  w_AB <- rlang::sym("w_AB"); w_BA <- rlang::sym("w_BA")
+  y_sim <- rlang::enquo(y_sim); w_sim <- rlang::enquo(w_sim)
+  w_AB <- rlang::enquo(w_AB); w_BA <- rlang::enquo(w_BA)
+  ybar <- "ybar"; ybar_C_A <- "ybar_C_A"; ybar_C_B <- "ybar_C_B"; Nhat <- "Nhat"
 
 
   # Medie partitions
   medie_partitions <- .reweight_strata_all %>%
     gby_(c(treatment, "common_support")) %>%
-    summarise2_(.dots = stats::setNames(
-      list(ybar_marginals, ybar_counterfactual_A, ybar_counterfactual_B, nhat),
-      c("ybar", "ybar_C_A", "ybar_C_B", "Nhat")))
+    # summarise2_(.dots = stats::setNames(
+    #   list(ybar_marginals, ybar_counterfactual_A, ybar_counterfactual_B, nhat),
+    #   c("ybar", "ybar_C_A", "ybar_C_B", "Nhat")))
+    dplyr::summarise(
+      !! ybar := stats::weighted.mean(!! y_sim, !! w_sim),
+      !! ybar_C_A := stats::weighted.mean(!! y_sim, !! w_AB),
+      !! ybar_C_B := stats::weighted.mean(!! y_sim, !! w_BA),
+      !! Nhat := sum(!! w_sim)
+    )
 
   medie_partitions %>% dplyr::ungroup()
 }
@@ -131,16 +143,24 @@ margin_mean.default <- function(.reweight_strata_all, y = NULL, weights = NULL, 
   if(is.null(y)) y <- attributes(.reweight_strata_all)[["y"]]
 
   # Preparazioni per summarise_
-  ybar_marginals <- lazyeval::interp(~stats::weighted.mean(x, w),
-                                     x = as.name(y), w = as.name(weights))
-  nhat <- lazyeval::interp(~sum(w), w = as.name(weights))
+  # ybar_marginals <- lazyeval::interp(~stats::weighted.mean(x, w),
+  #                                    x = as.name(y), w = as.name(weights))
+  # nhat <- lazyeval::interp(~sum(w), w = as.name(weights))
+
+  y_sim <- rlang::sym(y); w_sim <- rlang::sym(weights)
+  y_sim <- rlang::enquo(y_sim); w_sim <- rlang::enquo(w_sim)
+  ybar <- "ybar"; Nhat <- "Nhat"
 
   # Medie marginali
   medie_marginali <- .reweight_strata_all %>%
     gby_(treatment) %>%
-    summarise2_(.dots = stats::setNames(
-      list(ybar_marginals, nhat),
-      c("ybar", "Nhat")))
+    # summarise2_(.dots = stats::setNames(
+    #   list(ybar_marginals, nhat),
+    #   c("ybar", "Nhat")))
+    dplyr::summarise(
+      !! ybar := stats::weighted.mean(!! y_sim, !! w_sim),
+      !! Nhat := sum(!! w_sim)
+    )
 
   medie_marginali %>% dplyr::ungroup()
 }

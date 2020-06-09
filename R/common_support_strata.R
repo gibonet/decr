@@ -56,57 +56,57 @@ common_support_strata2 <- function(data, treatment, variables, y, weights = NULL
 # factor versions (with the function given as breaks_fun argument)
 # #' @rdname common_support_strata2
 # #' @export
-common_support_strata3 <- function(data, treatment, variables,
-                                   y, weights = NULL,
-                                   breaks_fun = quantile_breaks, add2names = "_new"
-){
-  # Check if some variables are of type double
-  doubles_ <- check_doubles(data %>% dplyr::select_(.dots = variables))
-  # If there are no doubles, returns character(0)
-
-  if(length(doubles_) > 0){
-    breaks_fun <- match.fun(breaks_fun)
-    dots_doubles <- vector(mode = "list", length = length(doubles_))
-    doubles_new <- paste0(doubles_, add2names)
-    for(i in seq_along(doubles_)){
-      dots_doubles[[i]] <-
-        lazyeval::interp(~cut_c(x, breaks = unique(breaks_fun(x))),
-                         x = as.name(doubles_[i]))
-    }
-
-    # Add new columns (doubles transformed into factors)
-    data <- data %>%
-      dplyr::mutate_(.dots = stats::setNames(dots_doubles, doubles_new))
-
-    which_doubles_ <- which(variables %in% doubles_)
-    new_variables <- variables
-    new_variables[which_doubles_] <- doubles_new
-  }else{
-    new_variables <- variables
-    doubles_new <- character(0)
-  }
-
-  .common_support <- common_support2(data = data,
-                                     treatment = treatment,
-                                     variables = new_variables)
-  # Fino a qui sono stati fatti i passi di common_support2
-  # Da qui in avanti vanno fatti i passi di common_support_strata2
-
-  if(is.null(weights)){
-    data <- data %>% dplyr::mutate(ones = 1)
-    weights <- "ones"
-  }
-  # Join dei dati con .common_support
-  res <- data %>%
-    dplyr::select_(.dots = c(treatment, variables, doubles_new, y, weights)) %>%
-    dplyr::left_join(.common_support, by = new_variables)
-  attributes(res)[["weights"]] <- weights
-  attributes(res)[["treatment"]] <- treatment
-  attributes(res)[["variables"]] <- variables
-  attributes(res)[["doubles_new"]] <- doubles_new
-  attributes(res)[["y"]] <- y
-  res
-}
+# common_support_strata3 <- function(data, treatment, variables,
+#                                    y, weights = NULL,
+#                                    breaks_fun = quantile_breaks, add2names = "_new"
+# ){
+#   # Check if some variables are of type double
+#   doubles_ <- check_doubles(data %>% dplyr::select_(.dots = variables))
+#   # If there are no doubles, returns character(0)
+#
+#   if(length(doubles_) > 0){
+#     breaks_fun <- match.fun(breaks_fun)
+#     dots_doubles <- vector(mode = "list", length = length(doubles_))
+#     doubles_new <- paste0(doubles_, add2names)
+#     for(i in seq_along(doubles_)){
+#       dots_doubles[[i]] <-
+#         lazyeval::interp(~cut_c(x, breaks = unique(breaks_fun(x))),
+#                          x = as.name(doubles_[i]))
+#     }
+#
+#     # Add new columns (doubles transformed into factors)
+#     data <- data %>%
+#       dplyr::mutate_(.dots = stats::setNames(dots_doubles, doubles_new))
+#
+#     which_doubles_ <- which(variables %in% doubles_)
+#     new_variables <- variables
+#     new_variables[which_doubles_] <- doubles_new
+#   }else{
+#     new_variables <- variables
+#     doubles_new <- character(0)
+#   }
+#
+#   .common_support <- common_support2(data = data,
+#                                      treatment = treatment,
+#                                      variables = new_variables)
+#   # Fino a qui sono stati fatti i passi di common_support2
+#   # Da qui in avanti vanno fatti i passi di common_support_strata2
+#
+#   if(is.null(weights)){
+#     data <- data %>% dplyr::mutate(ones = 1)
+#     weights <- "ones"
+#   }
+#   # Join dei dati con .common_support
+#   res <- data %>%
+#     dplyr::select_(.dots = c(treatment, variables, doubles_new, y, weights)) %>%
+#     dplyr::left_join(.common_support, by = new_variables)
+#   attributes(res)[["weights"]] <- weights
+#   attributes(res)[["treatment"]] <- treatment
+#   attributes(res)[["variables"]] <- variables
+#   attributes(res)[["doubles_new"]] <- doubles_new
+#   attributes(res)[["y"]] <- y
+#   res
+# }
 
 
 

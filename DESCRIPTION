@@ -1,27 +1,28 @@
 Package: decr
-Title: Tools to Perform Decompositions of Differences between two
+Title: Tools to Perform Decompositions of Differences Between Two
     Groups
 Description: Tools to perform decompositions of differences between two groups
     (for example wage decompositions). Focus is on the common support between the
     distribution of the characteristics of the two groups. In the common support,
     counterfactuals can be estimated in order to perform the decomposition.
-Version: 0.0.7.9033
+Version: 0.0.8
 License: MIT + file LICENSE
 Authors@R: c(
     person("Sandro", "Petrillo Burri", , "gibo.gaf@gmail.com", c("aut", "cre")),
+    person("Oscar", "Gonzalez Peral", , "goos1976@hotmail.com", "ctb"),
     person("USTAT", role = "cph", email = "dfe-ustat@ti.ch")
     )
 Depends:
     R (>= 3.1.2)
 Imports:
-    dplyr (>= 0.4.3),
-    lazyeval (>= 0.1.10),
+    dplyr (>= 0.7.0),
     magrittr (>= 1.5),
     stats,
     utils,
-    tidyr (>= 0.3.1),
+    tidyr (>= 0.7.0),
     grDevices,
-    boot
+    boot,
+    rlang
 Suggests:
     knitr,
     rmarkdown,
@@ -30,6 +31,8 @@ VignetteBuilder: knitr
 Encoding: UTF-8
 LazyData: true
 Collate:
+    "compat-lazyeval.R"
+    "dplyr_new_wrappers.R"
     "AA_utils.R"
     "gibutils.R"
     "invented_data.R"
@@ -44,4 +47,4 @@ Collate:
     "nopodec.R"
     "various_dec.R"
     "ZZ_bootstrap.R"
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1

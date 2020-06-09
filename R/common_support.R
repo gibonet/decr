@@ -37,10 +37,16 @@ common_support2 <- function(data, treatment, variables){
   k <- c(k-1, k)
   cols <- colnames(joint_distr)[k]
   col1 <- cols[1]; col2 <- cols[2]
-  dots <- lazyeval::interp(~ x - y, x = as.name(col1), y = as.name(col2))
+  # dots <- lazyeval::interp(~ x - y, x = as.name(col1), y = as.name(col2))
+  col1 <- rlang::sym(col1); col2 <- rlang::sym(col2)
+  col1 <- rlang::enquo(col1); col2 <- rlang::enquo(col2)
+  # dots <- list(n_diff = ~col1 - col2)
+
+  n_diff <- "n_diff"
   joint_distr <- joint_distr %>%
-    mutate2_(.dots = stats::setNames(list(dots), c("n_diff"))) %>%
-    mutate2_(common_support = ~ifelse(is.na(n_diff), FALSE, TRUE))
+    # mutate2_(.dots = stats::setNames(list(dots), c("n_diff"))) %>%
+    dplyr::mutate(!! n_diff := !! col1 - !! col2) %>%
+    dplyr::mutate(common_support = ifelse(is.na(n_diff), FALSE, TRUE))
 
   k <- check_NA_(joint_distr, variables = variables)
   joint_distr[k, "common_support"] <- FALSE
@@ -53,7 +59,7 @@ common_support2 <- function(data, treatment, variables){
 
 common_support3 <- function(data, treatment, variables){
   # Check if some variables are of type double
-  doubles_ <- check_doubles(data %>% dplyr::select_(.dots = variables))
+  doubles_ <- check_doubles(data %>% select2_(variables))
   if(length(doubles_) > 0) cat(paste0("One or more of the variables are of type double:\n", doubles_, "\nMaybe it is better to create discrete versions of these variables\n"))
 
   common_support2(data = data,

@@ -32,15 +32,19 @@ fhat_strata2 <- function(.cs_strata){
   weights <- attributes(.cs_strata)[["weights"]]
   treatment <- attributes(.cs_strata)[["treatment"]]
 
-  dots <- list(lazyeval::interp(~sum(var), var = as.name(weights)))
+  # dots <- list(lazyeval::interp(~sum(var), var = as.name(weights)))
+  w_sim <- rlang::sym(weights)
+  w_sim <- rlang::enquo(w_sim)
 #   treatment <- colnames(cs_strata)[1]  # fragilino... (modificato dalla versione 0.0.3 alla 0.0.4)
 
   dots_group <- c("strata", "common_support", treatment)
 
   Nhat <- NULL # to avoid a NOTE from R CMD check (...)
+  Nhat <- "Nhat"
   fhat <- .cs_strata %>%
     gby_(dots_group) %>%
-    summarise2_(.dots = stats::setNames(dots, c("Nhat"))) %>%
+    # summarise2_(.dots = stats::setNames(dots, c("Nhat"))) %>%
+    dplyr::summarise(!! Nhat := sum(!! w_sim)) %>%
     dplyr::ungroup() #%>%
 #    tidyr::complete_(cols = c("strata", treatment), fill = list(NA))
 
@@ -55,7 +59,7 @@ fhat_strata2 <- function(.cs_strata){
     gby_(treatment) %>%
     dplyr::mutate(fhat_groups = Nhat / sum(Nhat)) %>%
     dplyr::ungroup() %>%
-    tidyr::complete_(cols = c("strata", treatment), fill = list(NA))
+    complete2_(.variables = c("strata", treatment))
 
   # Impostare a FALSE dove is.na(common_support) e 0 dove is.na(Nhat)?
   # Anche fhat_groups uguale a 0 dove is.na(fhat_groups)

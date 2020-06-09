@@ -4,7 +4,7 @@
 \alias{dec_quantile}
 \alias{dec_quantile.default}
 \alias{dec_quantile.reweighted}
-\title{Estimates quantiles of the y variable for the two groups, in and out the common support. 
+\title{Estimates quantiles of the y variable for the two groups, in and out the common support.
 In the common support, counterfactual quantiles of y are estimated.
 It also estimates the number of individuals of the two groups.
 Moreover, marginal quantiles of the two groups are also computed.}
@@ -42,7 +42,7 @@ A data frame with four, five or six rows, with the following columns:
 }
 The number of rows is given by the combinations of the distinct values of
 the first two columns: \code{treatment} and \code{common_support}.
-In addition to these rows, there are two more rows at the end, with the 
+In addition to these rows, there are two more rows at the end, with the
 marginal quantiles of the two groups.
 In the "typical" case, the resulting data frame will have 4 rows. It can have three rows if all the individuals of one group are in the common support.
 In case of no common support or no out-of-support, the data frame will have two rows.

@@ -10,14 +10,19 @@
 #' @docType package
 #' @name decr
 #'
-#' @import lazyeval
+#' @import rlang
+#' @import tidyr
+#' @import dplyr
 #' @importFrom utils combn
 #' @importFrom stats na.omit setNames weighted.mean quantile
-#' @importFrom tidyr unite_
-#' @importFrom dplyr arrange_ filter filter_ group_by group_by_ left_join mutate mutate_ n select select_ summarise summarise_ ungroup as_data_frame do sample_n do_
 #' @importFrom grDevices nclass.Sturges nclass.scott nclass.FD
 #' @importFrom boot boot boot.ci
 NULL
+
+# Tolto
+# #' @import lazyeval
+# Tolto anche lazyeval dal file DESCRIPTION (lazyeval (>= 0.1.10))
+
 
 
 #' @importFrom magrittr %>%
@@ -27,3 +32,4 @@ magrittr::`%>%`
 
 # #' @import dplyr lazyeval
 # #' @importFrom tidyr expand expand_ complete_ unite_
+# #' @importFrom dplyr filter group_by left_join mutate n select summarise ungroup as_data_frame do sample_n do_

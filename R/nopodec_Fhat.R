@@ -37,20 +37,32 @@ nopodec_Fhat.default <- function(.reweight_strata_all, y = NULL, weights = NULL,
   if(is.null(y)) y <- attributes(.reweight_strata_all)[["y"]]
 
   # Preparazioni per summarise_
-  Fhat_marginals <- lazyeval::interp(~sum((x <= value) * w) / sum(w),
-                                     x = as.name(y), w = as.name(weights))
-  Fhat_counterfactual_A <- lazyeval::interp(~sum((x <= value) * w_AB) / sum(w_AB),
-                                            x = as.name(y))
-  Fhat_counterfactual_B <- lazyeval::interp(~sum((x <= value) * w_BA) / sum(w_BA),
-                                            x = as.name(y))
-  nhat <- lazyeval::interp(~sum(w), w = as.name(weights))
+  # Fhat_marginals <- lazyeval::interp(~sum((x <= value) * w) / sum(w),
+  #                                    x = as.name(y), w = as.name(weights))
+  # Fhat_counterfactual_A <- lazyeval::interp(~sum((x <= value) * w_AB) / sum(w_AB),
+  #                                           x = as.name(y))
+  # Fhat_counterfactual_B <- lazyeval::interp(~sum((x <= value) * w_BA) / sum(w_BA),
+  #                                           x = as.name(y))
+  # nhat <- lazyeval::interp(~sum(w), w = as.name(weights))
+  y_sim <- rlang::sym(y); w_sim <- rlang::sym(weights)
+  w_AB <- rlang::sym("w_AB"); w_BA <- rlang::sym("w_BA")
+  y_sim <- rlang::enquo(y_sim); w_sim <- rlang::enquo(w_sim)
+  w_AB <- rlang::enquo(w_AB); w_BA <- rlang::enquo(w_BA)
+
+  Fhat <- "Fhat"; Fhat_C_A <- "Fhat_C_A"; Fhat_C_B <- "Fhat_C_B"; Nhat <- "Nhat"
 
   # Ecdf partitions
   Fhat_partitions <- .reweight_strata_all %>%
     gby_(c(treatment, "common_support")) %>%
-    summarise2_(.dots = stats::setNames(
-      list(Fhat_marginals, Fhat_counterfactual_A, Fhat_counterfactual_B, nhat),
-      c("Fhat", "Fhat_C_A", "Fhat_C_B", "Nhat")))
+    # summarise2_(.dots = stats::setNames(
+    #   list(Fhat_marginals, Fhat_counterfactual_A, Fhat_counterfactual_B, nhat),
+    #   c("Fhat", "Fhat_C_A", "Fhat_C_B", "Nhat")))
+    dplyr::summarise(
+      !! Fhat := sum((!! y_sim <= value) * !! w_sim) / sum(!! w_sim),
+      !! Fhat_C_A := sum((!! y_sim <= value) * !! w_AB) / sum(!! w_AB),
+      !! Fhat_C_B := sum((!! y_sim <= value) * !! w_BA) / sum(!! w_BA),
+      !! Nhat := sum(!! w_sim)
+    )
 
   Fhat_partitions %>% dplyr::ungroup() %>% dplyr::mutate(yvalue = value)
 }
