@@ -11,8 +11,13 @@ Moreover, marginal quantiles of the two groups are also computed.}
 \usage{
 dec_quantiles(...)
 
-\method{dec_quantiles}{default}(.reweight_strata_all, y = NULL,
-  weights = NULL, probs = c(0.25, 0.5, 0.75), ...)
+\method{dec_quantiles}{default}(
+  .reweight_strata_all,
+  y = NULL,
+  weights = NULL,
+  probs = c(0.25, 0.5, 0.75),
+  ...
+)
 
 \method{dec_quantiles}{reweighted}(.reweighted, ...)
 }

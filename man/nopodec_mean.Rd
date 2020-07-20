@@ -10,8 +10,7 @@ It also estimates the number of individuals of the two groups.}
 \usage{
 nopodec_mean(...)
 
-\method{nopodec_mean}{default}(.reweight_strata_all, y = NULL,
-  weights = NULL, ...)
+\method{nopodec_mean}{default}(.reweight_strata_all, y = NULL, weights = NULL, ...)
 
 \method{nopodec_mean}{reweighted}(.reweighted, ...)
 }

@@ -4,14 +4,16 @@
 \name{invented_wages}
 \alias{invented_wages}
 \title{Invented dataset with wages of men and women.}
-\format{A data frame with 1000 rows and 5 variables:
+\format{
+A data frame with 1000 rows and 5 variables:
 \describe{
   \item{\code{gender}}{gender of the worker (\code{men} or \code{women})}
   \item{\code{sector}}{economic sector where the worker is employed (\code{secondary} or \code{tertiary})}
   \item{\code{education}}{educational level of the worker (\code{I}, \code{II} or \code{III})}
   \item{\code{wage}}{monthly wage of the worker (in an invented currency)}
   \item{\code{sample_weights}}{sampling weights}
-}}
+}
+}
 \usage{
 invented_wages
 }

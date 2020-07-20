@@ -8,8 +8,7 @@
 \usage{
 margin_mean(...)
 
-\method{margin_mean}{default}(.reweight_strata_all, y = NULL,
-  weights = NULL, ...)
+\method{margin_mean}{default}(.reweight_strata_all, y = NULL, weights = NULL, ...)
 
 \method{margin_mean}{reweighted}(.reweighted, ...)
 }

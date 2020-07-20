@@ -8,8 +8,13 @@
 \usage{
 margin_quantile(...)
 
-\method{margin_quantile}{default}(.reweight_strata_all, y = NULL,
-  weights = NULL, probs = 0.5, ...)
+\method{margin_quantile}{default}(
+  .reweight_strata_all,
+  y = NULL,
+  weights = NULL,
+  probs = 0.5,
+  ...
+)
 
 \method{margin_quantile}{reweighted}(.reweighted, ...)
 }

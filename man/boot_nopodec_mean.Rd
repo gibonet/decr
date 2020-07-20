@@ -4,8 +4,16 @@
 \alias{boot_nopodec_mean}
 \title{Bootstrap of the mean decomposition procedure.}
 \usage{
-boot_nopodec_mean(data, treatment, variables, y, weights = NULL,
-  R = 10, counterfactual = c("AB", "BA"), ...)
+boot_nopodec_mean(
+  data,
+  treatment,
+  variables,
+  y,
+  weights = NULL,
+  R = 10,
+  counterfactual = c("AB", "BA"),
+  ...
+)
 }
 \arguments{
 \item{data}{data frame}

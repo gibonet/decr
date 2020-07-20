@@ -11,8 +11,7 @@ Moreover, marginal medians of the two groups are also computed.}
 \usage{
 dec_median(...)
 
-\method{dec_median}{default}(.reweight_strata_all, y = NULL,
-  weights = NULL, ...)
+\method{dec_median}{default}(.reweight_strata_all, y = NULL, weights = NULL, ...)
 
 \method{dec_median}{reweighted}(.reweighted, ...)
 }

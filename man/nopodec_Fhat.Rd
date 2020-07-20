@@ -10,8 +10,7 @@ It also estimates the number of individuals of the two groups.}
 \usage{
 nopodec_Fhat(...)
 
-\method{nopodec_Fhat}{default}(.reweight_strata_all, y = NULL,
-  weights = NULL, value, ...)
+\method{nopodec_Fhat}{default}(.reweight_strata_all, y = NULL, weights = NULL, value, ...)
 
 \method{nopodec_Fhat}{reweighted}(.reweighted, value, ...)
 }

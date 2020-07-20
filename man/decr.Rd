@@ -3,7 +3,6 @@
 \docType{package}
 \name{decr}
 \alias{decr}
-\alias{decr-package}
 \title{Tools to Perform Decompositions of Differences between two Groups}
 \description{
 Tools to perform decompositions of differences between two groups
