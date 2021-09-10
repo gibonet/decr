@@ -5,4 +5,4 @@
 ^README\.md$
 ^\.gitlab-ci\.yml$
 check_decr.R
-
+\.github
