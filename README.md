@@ -5,7 +5,8 @@ output: github_document
 
 
 
-[![Travis-CI Build Status](https://travis-ci.org/gibonet/decr.svg?branch=master)](https://travis-ci.org/gibonet/decr) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/decr)](http://cran.r-project.org/package=decr)
+[![R build status](https://github.com/gibonet/decr/workflows/R-CMD-check/badge.svg)](https://github.com/gibonet/decr/actions)
+[![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/decr)](http://cran.r-project.org/package=decr)
 
 The decr package provides functions to decompose observed differences in distributional statistics of a numeric variable (y) between two groups.
 
