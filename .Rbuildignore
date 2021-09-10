@@ -1,4 +1,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$
-^README.Rmd$
+^README\.Rmd$
+^README\.md$
+^\.gitlab-ci\.yml$
+check_decr.R
+
