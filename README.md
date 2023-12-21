@@ -5,7 +5,7 @@ output: github_document
 
 
 
-[![R build status](https://github.com/gibonet/decr/workflows/R-CMD-check/badge.svg)](https://github.com/gibonet/decr/actions)
+[![R-CMD-check](https://github.com/gibonet/decr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/gibonet/decr/actions/workflows/R-CMD-check.yaml)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/decr)](http://cran.r-project.org/package=decr)
 
 The decr package provides functions to decompose observed differences in distributional statistics of a numeric variable (y) between two groups.

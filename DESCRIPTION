@@ -47,4 +47,4 @@ Collate:
     "nopodec.R"
     "various_dec.R"
     "ZZ_bootstrap.R"
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
