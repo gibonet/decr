@@ -14,8 +14,8 @@ An example of such analysis is the observed difference between the average wages
 
 The decomposition proposed here is of the Blinder (1973) and Oaxaca (1973) type, whose aim is to separate the observed difference between average wages of two groups in two components:
 
-- One that is attributable to the different distributions of observed characteristics of the two groups;
-- One that is not explainable by the different distributions of observed characteristics of the two groups.
+- One that is attributable to the different distributions of observed characteristics of the two groups;  
+- One that is not explainable by the different distributions of observed characteristics of the two groups.  
 
 The decompositions in decr are performed nonparametrically with the reweighting approach of Di Nardo, Fortin and Lemieux (DFL, 1996) and, for what concerns the common support, it is possible to decompose the difference of any distributional statistics (not only the mean). In the case of the difference between the averages (of y) of two groups, a decomposition in 4 components is done, as in Nopo (2008). The reweighting factors, in the common support, are estimated directly from the ratio of the relative frequencies observed in the strata for the two groups. In this sense, the estimation approach is very similar to coarsened exact matching (Iacus, King and Porro 2011), except that here it is possible to consider, if any, sampling weights.
 
