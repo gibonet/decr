@@ -2,6 +2,7 @@
 % Please edit documentation in R/decr.R
 \docType{package}
 \name{decr}
+\alias{decr-package}
 \alias{decr}
 \title{Tools to Perform Decompositions of Differences between two Groups}
 \description{
@@ -10,4 +11,14 @@ Tools to perform decompositions of differences between two groups
 between the distribution of the characteristics of the two groups.
 In the common support, counterfactuals can be estimated in order
 to perform the decomposition.
+}
+\author{
+\strong{Maintainer}: Sandro Petrillo Burri \email{gibo.gaf@gmail.com}
+
+Other contributors:
+\itemize{
+  \item Oscar Gonzalez Peral \email{goos1976@hotmail.com} [contributor]
+  \item USTAT \email{dfe-ustat@ti.ch} [copyright holder]
+}
+
 }

@@ -7,3 +7,6 @@
 check_decr.R
 \.github
 ^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$

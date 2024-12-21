@@ -10,6 +10,8 @@ build()
 check_man()
 check()
 
+# usethis::use_pkgdown()
+pkgdown::build_site()
 
 # git
 # git remote add github git@github.com:gibonet/decr.git

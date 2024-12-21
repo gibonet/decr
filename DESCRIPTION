@@ -8,7 +8,7 @@ Description: Tools to perform decompositions of differences between two groups
 Version: 0.0.8.9000
 License: MIT + file LICENSE
 Authors@R: c(
-    person("Sandro", "Petrillo Burri", , "gibo.gaf@gmail.com", c("aut", "cre")),
+    person("Sandro", "Burri", , "gibo.gaf@gmail.com", c("aut", "cre")),
     person("Oscar", "Gonzalez Peral", , "goos1976@hotmail.com", "ctb"),
     person("USTAT", role = "cph", email = "dfe-ustat@ti.ch")
     )
@@ -47,4 +47,4 @@ Collate:
     "nopodec.R"
     "various_dec.R"
     "ZZ_bootstrap.R"
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
