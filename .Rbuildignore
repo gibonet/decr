@@ -10,3 +10,5 @@ check_decr.R
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+
+scripts/
