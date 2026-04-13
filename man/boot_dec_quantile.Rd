@@ -35,10 +35,10 @@ a column of ones}
 
 \item{counterfactual}{"AB" or "BA". "AB" means that we want to estimate the counterfactual (wage) of group A, as if their characteristics were distributed as in group B. "BA" is the opposite (characteristics of group B are balanced to those of group A).}
 
-\item{...}{other arguments passed on to \code{\link{boot}}.}
+\item{...}{other arguments passed on to `boot::boot()`.}
 }
 \description{
-Bootstrap estimates of \code{\link{dec_quantile}} and \code{\link{dec_}}.
+Bootstrap estimates of `dec_quantile()` and `dec_()`.
 This serves to estimate for example confidence intervals of each component
 of the decomposition.
 }

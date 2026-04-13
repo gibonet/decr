@@ -23,7 +23,7 @@ fun_boot_mean <- function(y, counterfactual = c("AB", "BA")){
 
 #' Bootstrap of the mean decomposition procedure.
 #'
-#' Bootstrap estimates of \code{\link{nopodec_mean}} and \code{\link{nopodec}}.
+#' Bootstrap estimates of `nopodec_mean()` and `nopodec()`.
 #' This serves to estimate for example confidence intervals of each component
 #' of the decomposition.
 #'
@@ -36,7 +36,7 @@ fun_boot_mean <- function(y, counterfactual = c("AB", "BA")){
 #' a column of ones
 #' @param R The number of bootstrap replicates. This will be a single positive integer.
 #' @param counterfactual "AB" or "BA". "AB" means that we want to estimate the counterfactual (wage) of group A, as if their characteristics were distributed as in group B. "BA" is the opposite (characteristics of group B are balanced to those of group A).
-#' @param ... other arguments passed on to \code{\link{boot}}.
+#' @param ... other arguments passed on to `boot::boot()`.
 #'
 #' @examples
 #' \dontrun{
@@ -93,7 +93,7 @@ fun_boot_quantile <- function(y, probs = 0.5, counterfactual = c("AB", "BA")){
 
 #' Bootstrap of the quantile decomposition procedure.
 #'
-#' Bootstrap estimates of \code{\link{dec_quantile}} and \code{\link{dec_}}.
+#' Bootstrap estimates of `dec_quantile()` and `dec_()`.
 #' This serves to estimate for example confidence intervals of each component
 #' of the decomposition.
 #'
