@@ -38,7 +38,7 @@ Collate:
     "invented_data.R"
     "common_support.R"
     "common_support_strata.R"
-    "decr.R"
+    "decr-package.R"
     "fhat_strata.R"
     "reweight_strata.R"
     "reweight_strata_all.R"
